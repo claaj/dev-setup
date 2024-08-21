@@ -1,6 +1,6 @@
 # Dev setup
 
-This repo contains a my `neovim`, `tmux` and `wezterm` config  that I use for development.
+This repo contains a my `neovim` and `tmux` config  that I use for development.
 
 Dependencies:
 - `neovim`
@@ -13,7 +13,6 @@ Dependencies:
 - `meson`
 - `stow`
 - `fzf`
-- `wezterm`
 
 ## Install apps
 
