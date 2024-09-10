@@ -88,7 +88,8 @@ return {
 		})
 
 		require("lspconfig").clangd.setup({
-			cmd = { "/usr/bin/clangd", "--background-index", "--clang-tidy", "--log=verbose" },
+			-- cmd = { "/usr/bin/clangd", "--background-index", "--clang-tidy", "--log=verbose" },
+			cmd = { "clangd", "--background-index", "--clang-tidy", "--log=verbose", "--fallback-style=Google" },
 		})
 	end,
 }
