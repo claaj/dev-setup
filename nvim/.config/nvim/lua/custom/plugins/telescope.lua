@@ -27,8 +27,26 @@ return {
 
 		-- set keymaps
 		local keymap = vim.keymap -- for conciseness
+		local builtin = require("telescope.builtin")
 
-		keymap.set("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "Find files in cwd" })
-		keymap.set("n", "<leader>fr", "<cmd>Telescope oldfiles<cr>", { desc = "Find recent files" })
+		keymap.set("n", "<leader>ff", builtin.find_files, { desc = "Find files in cwd" })
+		keymap.set("n", "<leader>fr", builtin.oldfiles, { desc = "Find recent files" })
+		keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "Grep in current file" })
+		keymap.set("n", "<leader>bb", builtin.buffers, { desc = "Current buffers" })
+		keymap.set("n", "<leader>fd", builtin.diagnostics, { desc = "Find diagnostics" })
+		keymap.set("n", "<leader>fw", builtin.grep_string, { desc = "Find word under cursor" })
+
+		keymap.set("n", "<leader>bs", function()
+			builtin.current_buffer_fuzzy_find(require("telescope.themes").get_dropdown({
+				previewer = false,
+			}))
+		end, { desc = "Search in current buffer" })
+
+		keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "Find help" })
+		keymap.set("n", "<leader>km", builtin.keymaps, { desc = "Find keymaps" })
+
+		keymap.set("n", "<leader>gc", builtin.git_commits, { desc = "Git commits" })
+		keymap.set("n", "<leader>gs", builtin.git_status, { desc = "Git status" })
+		keymap.set("n", "<leader>gb", builtin.git_branches, { desc = "Git branches" })
 	end,
 }

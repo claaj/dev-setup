@@ -33,7 +33,7 @@ return {
 				"jsonls",
 				"bashls",
 				"cmake",
-				"typst_lsp",
+				"tinymist",
 				"yamlls",
 			},
 		})

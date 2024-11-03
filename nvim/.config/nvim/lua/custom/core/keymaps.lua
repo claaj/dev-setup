@@ -32,10 +32,10 @@ keymap.set("n", "<leader>tn", "<cmd>tabn<CR>", { desc = "Go to next tab" }) --  
 keymap.set("n", "<leader>tp", "<cmd>tabp<CR>", { desc = "Go to previous tab" }) --  go to previous tab
 keymap.set("n", "<leader>tf", "<cmd>tabnew %<CR>", { desc = "Open current buffer in new tab" }) --  move current buffer to new tab
 
--- Explorer
-keymap.set("n", "<leader>fe", "<cmd>:Ex<CR>", { desc = "Open explorer" })
-
 -- Save
 keymap.set("n", "<leader>fq", "<cmd>:wq<CR>", { desc = "Save & exit" })
 keymap.set("n", "<leader>fs", "<cmd>:w<CR>", { desc = "Save file" })
 keymap.set("n", "<leader>qq", "<cmd>:q<CR>", { desc = "Quit" })
+
+-- Buffer config
+keymap.set("n", "<leader>bk", "<cmd>bp|bd #<CR>", { desc = "Kill current buffer" })
