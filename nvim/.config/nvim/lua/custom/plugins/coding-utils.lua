@@ -2,11 +2,14 @@ return {
 	"tpope/vim-sleuth",
 
 	{
-		"lukas-reineke/indent-blankline.nvim",
-		main = "ibl",
+		"shellRaining/hlchunk.nvim",
+		event = { "BufReadPre", "BufNewFile" },
 		opts = {
+			chunk = {
+				enable = false,
+			},
 			indent = {
-				char = "▏",
+				enable = true,
 			},
 		},
 	},
@@ -16,6 +19,10 @@ return {
 
 	{
 		"windwp/nvim-autopairs",
-		opts = {},
+		opts = {
+			disable_filetype = { "TelescopePrompt", "vim" }, -- Desactivar en ciertos tipos de archivos
+			enable_check_bracket_line = true, -- Verificar si hay texto después del paréntesis de apertura
+			ignored_next_char = "[%w%.]", -- Ignorar si el siguiente carácter es una letra o un punto
+		},
 	},
 }
