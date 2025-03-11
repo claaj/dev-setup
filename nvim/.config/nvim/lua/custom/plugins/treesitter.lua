@@ -25,6 +25,7 @@ return {
 				"gitignore",
 				"markdown",
 				"markdown_inline",
+				"comment",
 			},
 
 			textobjects = {
