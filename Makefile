@@ -3,7 +3,7 @@ FONT_DIR := ~/.local/share/
 all: copy_fonts run_stow 
 
 copy_fonts:
-	cp -r fonts $(FONT_DIR)
+	./setup-fonts.sh
 
 run_stow:
 	stow fontconfig tmux nvim
