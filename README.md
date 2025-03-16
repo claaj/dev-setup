@@ -17,7 +17,7 @@ Dependencies:
 - `fzf`
 
 ~~~
-make all # Install fonts and runs stow for nvim, fontconfig and tmux
+make # Install fonts and runs stow for nvim, fontconfig and tmux
 ~~~
 
 ## Install apps
