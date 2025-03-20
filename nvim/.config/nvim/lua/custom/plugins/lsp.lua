@@ -22,6 +22,9 @@ return {
 					opts.desc = "See available code actions"
 					keymap.set({ "n", "v" }, "gra", vim.lsp.buf.code_action, opts) -- see available code actions, in visual mode will apply to selection
 
+					opts.desc = "Show line diagnostics"
+					keymap.set("n", "grd", vim.diagnostic.open_float, opts) -- show diagnostics for line
+
 					opts.desc = "Smart rename"
 					keymap.set("n", "grn", vim.lsp.buf.rename, opts) -- smart rename
 
@@ -35,6 +38,12 @@ return {
 					keymap.set("n", "<leader>lr", ":LspRestart<CR>", opts) -- mapping to restart lsp if necessary
 				end,
 			})
+
+			local signs = { Error = " ", Warn = " ", Hint = "󰠠 ", Info = " " }
+			for type, icon in pairs(signs) do
+				local hl = "DiagnosticSign" .. type
+				vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
+			end
 
 			local capabilities = require("blink.cmp").get_lsp_capabilities()
 
