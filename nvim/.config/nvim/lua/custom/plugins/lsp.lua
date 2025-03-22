@@ -66,6 +66,8 @@ return {
 					"--compile-commands-dir=build",
 				},
 			})
+
+			vim.cmd([[autocmd BufRead,BufNewFile *.json set filetype=jsonc]])
 		end,
 	},
 }
