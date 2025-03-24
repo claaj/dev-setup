@@ -1,7 +1,13 @@
 local M = {}
 
 M.base46 = {
-	theme = "customcarbon",
+	theme = "default-dark",
+	hl_override = {
+		NvDashAscii = {
+			bg = "NONE",
+			fg = "red",
+		},
+	},
 	integrations = {
 		"neogit",
 		"mason",
