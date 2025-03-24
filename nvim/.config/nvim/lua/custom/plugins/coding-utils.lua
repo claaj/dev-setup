@@ -31,4 +31,37 @@ return {
 			})
 		end,
 	},
+
+	{
+		"folke/snacks.nvim",
+		priority = 1000,
+		lazy = false,
+		opts = {
+			bigfile = { enabled = true },
+			dashboard = { enabled = false },
+			explorer = { enabled = false },
+			indent = { enabled = true },
+			input = { enabled = true },
+			picker = { enabled = false },
+			notifier = { enabled = true },
+			quickfile = { enabled = true },
+			scope = { enabled = false },
+			scroll = { enabled = true },
+			statuscolumn = { enabled = false },
+			words = { enabled = false },
+		},
+	},
+
+	{
+		"Chaitanyabsprip/fastaction.nvim",
+		config = function()
+			require("fastaction").setup({})
+			vim.keymap.set(
+				{ "n", "x" },
+				"gra",
+				'<cmd>lua require("fastaction").code_action()<CR>',
+				{ buffer = bufnr, desc = "Show available code actions" }
+			)
+		end,
+	},
 }

@@ -45,5 +45,7 @@ return {
 				"clang-format",
 			},
 		})
+
+		dofile(vim.g.base46_cache .. "mason")
 	end,
 }

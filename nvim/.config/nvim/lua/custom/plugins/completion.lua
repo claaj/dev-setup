@@ -11,6 +11,7 @@ return {
 
 		---@module 'blink.cmp'
 		opts = {
+
 			keymap = {
 				["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
 				["<C-e>"] = { "hide", "fallback" },
@@ -78,6 +79,11 @@ return {
 
 			sources = {
 				default = { "lsp", "path", "snippets", "buffer" },
+				providers = {
+					cmdline = {
+						enabled = false,
+					},
+				},
 			},
 
 			fuzzy = { implementation = "prefer_rust_with_warning" },
