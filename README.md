@@ -2,7 +2,7 @@
 
 This repo contains a my `neovim` and `tmux` config that I use for development.
 
-Also has the fontalias with `Iosevka Extended` and `Nerd Font Symbols`.
+Also has the fontalias with `JetBrainsMono NL` and `Nerd Font Symbols`.
 
 Dependencies:
 - `neovim`
