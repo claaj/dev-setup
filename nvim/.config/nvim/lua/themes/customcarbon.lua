@@ -74,6 +74,9 @@ M.polish_hl = {
 		["@variable.parameter"] = { fg = M.base_16.base0C },
 
 		-- CPP config
+		["@lsp.typemod.class.deduced.cpp"] = { fg = M.base_16.base0C },
+		["@lsp.type.operator.cpp"] = { fg = M.base_30.red },
+		["@lsp.typemod.operator.userDefined.cpp"] = { fg = M.base_16.base05 },
 		["@lsp.typemod.namespace.globalScope.cpp"] = { fg = M.base_16.base0C },
 		["@lsp.typemod.variable.defaultLibrary.cpp"] = { fg = M.base_30.red },
 	},
