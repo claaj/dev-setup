@@ -1,7 +1,7 @@
 local M = {}
 
 M.base46 = {
-	theme = "tomorrow_night",
+	theme = "darcula-dark",
 	hl_override = {
 		NvDashAscii = {
 			bg = "NONE",

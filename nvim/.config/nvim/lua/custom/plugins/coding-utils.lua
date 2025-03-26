@@ -51,15 +51,19 @@ return {
 			words = { enabled = false },
 		},
 	},
-
 	{
-		"Chaitanyabsprip/fastaction.nvim",
+		"rachartier/tiny-code-action.nvim",
+		dependencies = {
+			{ "nvim-lua/plenary.nvim" },
+			{ "nvim-telescope/telescope.nvim" },
+		},
+		event = "LspAttach",
 		config = function()
-			require("fastaction").setup({})
+			require("tiny-code-action").setup()
 			vim.keymap.set(
 				{ "n", "x" },
 				"gra",
-				'<cmd>lua require("fastaction").code_action()<CR>',
+				'<cmd>lua require("tiny-code-action").code_action()<CR>',
 				{ buffer = bufnr, desc = "Show available code actions" }
 			)
 		end,
