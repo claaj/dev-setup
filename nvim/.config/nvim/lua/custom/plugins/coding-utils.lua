@@ -1,6 +1,17 @@
 return {
-	-- "gc" to comment visual regions/lines
-	{ "numToStr/Comment.nvim", opts = {} },
+	{
+		"numToStr/Comment.nvim",
+		opts = {
+			toggler = {
+				line = "gcc",
+				block = "gbc",
+			},
+		},
+		keys = {
+			{ "gcc", desc = "Toggle Line Comment (Loads Comment.nvim)" },
+			{ "gbc", desc = "Toggle Block Comment (Loads Comment.nvim)" },
+		},
+	},
 
 	{
 		"folke/todo-comments.nvim",
