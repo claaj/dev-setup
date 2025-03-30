@@ -31,6 +31,18 @@ return {
 				["<C-k>"] = { "show_signature", "hide_signature", "fallback" },
 			},
 
+			signature = {
+				enabled = true,
+				window = {
+					show_documentation = true,
+				},
+				trigger = {
+					-- enabled = false, -- if I uncomment this, the keymap won't work anymore
+					show_on_trigger_character = false,
+					show_on_insert_on_trigger_character = false,
+				},
+			},
+
 			completion = {
 				menu = {
 					draw = {
