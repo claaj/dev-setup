@@ -11,7 +11,11 @@ return {
 				"n",
 				"<leader>tt",
 				'<cmd>lua require("nvchad.themes").open({ style = "flat" })<cr>',
-				{ noremap = true, silent = true }
+				{
+					noremap = true,
+					silent = true,
+					desc = "Select NVCHAD themes",
+				}
 			)
 		end,
 	},

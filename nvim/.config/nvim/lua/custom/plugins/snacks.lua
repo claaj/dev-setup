@@ -262,6 +262,13 @@ return {
 			desc = "Rename File",
 		},
 		{
+			"<leader>to",
+			function()
+				Snacks.picker.todo_comments()
+			end,
+			desc = "Rename File",
+		},
+		{
 			"<leader>gB",
 			function()
 				Snacks.gitbrowse()
