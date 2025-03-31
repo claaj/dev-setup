@@ -128,7 +128,7 @@ return {
 					-- Whether to automatically show the window when new completion items are available
 					menu = { auto_show = true },
 					-- Displays a preview of the selected item on the current line
-					ghost_text = { enabled = true },
+					ghost_text = { enabled = false },
 				},
 			},
 
