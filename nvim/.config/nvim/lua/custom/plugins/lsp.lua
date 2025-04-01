@@ -20,21 +20,21 @@ return {
           local opts = { buffer = ev.buf, silent = true }
 
           -- set keybinds
-          -- opts.desc = "Show LSP references"
-          -- keymap.set("n", "grr", "<cmd>Telescope lsp_references<CR>", opts) -- show definition, references
+          opts.desc = "Show LSP references"
+          keymap.set("n", "grr", "<cmd>Telescope lsp_references<CR>", opts) -- show definition, references
           -- keymap.set("n", "grr", vim.lsp.buf.references, opts) -- show definition, references
 
-          -- opts.desc = "Go to declaration"
-          -- keymap.set("n", "gD", vim.lsp.buf.declaration, opts) -- go to declaration
+          opts.desc = "Go to declaration"
+          keymap.set("n", "gD", vim.lsp.buf.declaration, opts) -- go to declaration
 
-          -- opts.desc = "Show LSP definitions"
-          -- keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<CR>", opts) -- show lsp definitions
+          opts.desc = "Show LSP definitions"
+          keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<CR>", opts) -- show lsp definitions
 
-          -- opts.desc = "Show LSP implementations"
-          -- keymap.set("n", "gi", "<cmd>Telescope lsp_implementations<CR>", opts) -- show lsp implementations
+          opts.desc = "Show LSP implementations"
+          keymap.set("n", "gi", "<cmd>Telescope lsp_implementations<CR>", opts) -- show lsp implementations
 
-          -- opts.desc = "Show LSP type definitions"
-          -- keymap.set("n", "gt", "<cmd>Telescope lsp_type_definitions<CR>", opts) -- show lsp type definitions
+          opts.desc = "Show LSP type definitions"
+          keymap.set("n", "gt", "<cmd>Telescope lsp_type_definitions<CR>", opts) -- show lsp type definitions
 
           opts.desc = "See available code actions"
           keymap.set({ "n", "v" }, "gra", vim.lsp.buf.code_action, opts) -- see available code actions, in visual mode will apply to selection
@@ -64,6 +64,8 @@ return {
         local hl = "DiagnosticSign" .. type
         vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
       end
+
+      vim.diagnostic.config({ virtual_text = true })
 
       local capabilities = require("blink.cmp").get_lsp_capabilities()
 

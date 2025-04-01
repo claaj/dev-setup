@@ -113,7 +113,6 @@ return {
           return {}
         end,
         completion = {
-          accept = { auto_brackets = { enabled = true } },
           trigger = {
             show_on_blocked_trigger_characters = {},
             show_on_x_blocked_trigger_characters = {},

@@ -3,8 +3,7 @@ return {
     "brianhuster/live-preview.nvim",
     cmd = "LivePreview",
     dependencies = {
-      "nvim-telescope/telescope.nvim",
-      cmd = "LivePreview",
+      "nvim-telescope/telescope.nvim"
     },
   },
   {
@@ -17,7 +16,7 @@ return {
   },
   {
     "marnym/typst-watch.nvim",
-    opts = {},  -- specify options here
+    opts = {},    -- specify options here
     ft = "typst", -- for lazy loading
   },
 }

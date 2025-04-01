@@ -41,4 +41,22 @@ return {
       })
     end,
   },
+  {
+    "folke/snacks.nvim",
+    lazy = false,
+    opts = {
+      bigfile = { enabled = true },
+      dashboard = { enabled = false },
+      explorer = { enabled = false },
+      indent = { enabled = true },
+      input = { enabled = false },
+      picker = { enabled = true },
+      notifier = { enabled = false },
+      quickfile = { enabled = false },
+      scope = { enabled = true },
+      scroll = { enabled = false },
+      statuscolumn = { enabled = false },
+      words = { enabled = true },
+    },
+  }
 }

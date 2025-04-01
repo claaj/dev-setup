@@ -41,7 +41,7 @@ M.ui = {
     },
   },
 
-  -- telescope = { style = "borderless" },
+  telescope = { style = "bordered" },
 
   statusline = {
     enabled = true,
