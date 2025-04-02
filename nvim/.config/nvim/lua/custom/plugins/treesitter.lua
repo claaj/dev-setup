@@ -9,6 +9,7 @@ return {
       highlight = {
         enable = true,
         additional_vim_regex_highlighting = true,
+        use_languagetree = true,
       },
 
       indent = { enable = true, disable = { "python" } },
@@ -27,6 +28,7 @@ return {
         "markdown",
         "markdown_inline",
         "comment",
+        "printf"
       },
 
       textobjects = {

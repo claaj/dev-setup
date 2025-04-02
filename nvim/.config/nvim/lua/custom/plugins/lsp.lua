@@ -3,12 +3,15 @@ return {
     "neovim/nvim-lspconfig",
     event = { "BufReadPre", "BufNewFile" },
     dependencies = { "saghen/blink.cmp" },
-
-    -- example using `opts` for defining servers
-    opts = {},
     config = function()
       local lspconfig = require("lspconfig")
       local mason_lspconfig = require("mason-lspconfig")
+
+      vim.diagnostic.config({
+        virtual_text = true,
+        update_in_insert = false,
+        severity_sort = true,
+      })
 
       local keymap = vim.keymap -- for conciseness
 
@@ -40,7 +43,8 @@ return {
           keymap.set({ "n", "v" }, "gra", vim.lsp.buf.code_action, opts) -- see available code actions, in visual mode will apply to selection
 
           opts.desc = "Smart rename"
-          keymap.set("n", "grn", vim.lsp.buf.rename, opts) -- smart rename
+          -- keymap.set("n", "grn", vim.lsp.buf.rename, opts)              -- smart rename
+          keymap.set("n", "grn", require("nvchad.lsp.renamer"), opts) -- smart rename
 
           -- opts.desc = "Show buffer diagnostics"
           -- keymap.set("n", "grD", Snacks.picker.diagnostics_buffer(), opts) -- show  diagnostics for file
@@ -55,7 +59,12 @@ return {
           keymap.set("n", "]d", vim.diagnostic.goto_next, opts) -- jump to next diagnostic in buffer
 
           opts.desc = "Show documentation for what is under cursor"
-          keymap.set("n", "K", vim.lsp.buf.hover, opts) -- show documentation for what is under cursor
+          keymap.set("n", "K", function()
+            vim.lsp.buf.hover({
+              border = "rounded",
+            })
+          end
+          , opts) -- show documentation for what is under cursor
         end,
       })
 
@@ -64,8 +73,6 @@ return {
         local hl = "DiagnosticSign" .. type
         vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
       end
-
-      vim.diagnostic.config({ virtual_text = true })
 
       local capabilities = require("blink.cmp").get_lsp_capabilities()
 

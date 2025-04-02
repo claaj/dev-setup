@@ -4,7 +4,6 @@ return {
     "lewis6991/gitsigns.nvim",
     event = "VeryLazy",
     opts = {
-      -- See `:help gitsigns.txt`
       signs = {
         add = { text = "+" },
         change = { text = "~" },
@@ -37,6 +36,8 @@ return {
     end,
     dependencies = {
       "nvim-lua/plenary.nvim",
+      "nvim-telescope/telescope.nvim", -- optional
+      "sindrets/diffview.nvim",        -- optional - Diff integration
     },
   },
 }
