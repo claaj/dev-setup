@@ -74,13 +74,13 @@ return {
         vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
       end
 
-      local capabilities = require("blink.cmp").get_lsp_capabilities()
+      local server_capabilities = require("blink.cmp").get_lsp_capabilities()
 
       mason_lspconfig.setup_handlers({
         -- default handler for installed servers
         function(server_name)
           lspconfig[server_name].setup({
-            capabilities = capabilities,
+            capabilities = server_capabilities,
           })
         end,
       })
@@ -95,6 +95,12 @@ return {
           "--compile-commands-dir=build",
         },
       })
+
+      -- Disable semantic highlight
+      for _, group in ipairs(vim.fn.getcompletion("@lsp", "highlight")) do
+        vim.api.nvim_set_hl(0, group, {})
+      end
+
 
       vim.cmd([[autocmd BufRead,BufNewFile *.json set filetype=jsonc]])
 
