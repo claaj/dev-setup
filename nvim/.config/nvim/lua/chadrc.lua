@@ -1,7 +1,7 @@
 local M = {}
 
 M.base46 = {
-  theme = "darcula-dark",
+  theme = "darcula-solid",
   hl_override = {
     NvDashAscii = {
       bg = "NONE",
@@ -19,6 +19,7 @@ M.base46 = {
     "lsp",
     "treesitter",
     "syntax",
+    "semantic_tokens"
   },
 }
 
