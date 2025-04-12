@@ -46,8 +46,8 @@ return {
           -- keymap.set("n", "grn", vim.lsp.buf.rename, opts)              -- smart rename
           keymap.set("n", "grn", require("nvchad.lsp.renamer"), opts) -- smart rename
 
-          -- opts.desc = "Show buffer diagnostics"
-          -- keymap.set("n", "grD", Snacks.picker.diagnostics_buffer(), opts) -- show  diagnostics for file
+          opts.desc = "Show buffer diagnostics"
+          keymap.set("n", "grD", "<cmd>Telescope diagnostics<CR>", opts) -- show  diagnostics for file
 
           opts.desc = "Show line diagnostics"
           keymap.set("n", "grd", vim.diagnostic.open_float, opts) -- show diagnostics for line
