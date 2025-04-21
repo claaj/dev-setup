@@ -73,6 +73,12 @@ return {
     },
   },
   {
+    "lewis6991/gitsigns.nvim",
+    opts = {
+      signcolumn = true,
+    }
+  },
+  {
     "Mofiqul/vscode.nvim",
     priority = 1000,
     config = function()

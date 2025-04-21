@@ -103,38 +103,78 @@ M.file = function()
   return { icon, name }
 end
 
+-- M.git = function()
+--   local MiniGit
+--   local git_present, _ = pcall(function() MiniGit = require('mini.git') end)
+--   if not git_present then return "" end
+--
+--   local buf_id = M.stbufnr()
+--   if buf_id == 0 then return "" end
+--
+--   local data_ok, data = pcall(MiniGit.get_buf_data, buf_id)
+--   if not data_ok or not data or not data.head_name then return "" end
+--
+--   local branch_display = " " .. data.head_name
+--   local changes_str = ""
+--
+--   local summary_ok, summary = pcall(function() return vim.b[buf_id].minidiff_summary end)
+--
+--   if summary_ok and summary then
+--     local added = summary.add or 0
+--     local changed = summary.change or 0
+--     local deleted = summary.delete or 0
+--
+--     if added > 0 then
+--       changes_str = changes_str .. " %#St_gitAdded# " .. added .. "%*"
+--     end
+--     -- Mostrar cambios ('~') solo si hay cambios y no solo adds/deletes
+--     if changed > 0 then
+--       changes_str = changes_str .. " %#St_gitChanged# " .. changed .. "%*" -- Highlight para cambios
+--     end
+--     if deleted > 0 then
+--       changes_str = changes_str .. " %#St_gitRemoved# " .. deleted .. "%*"
+--     end
+--     -- Añadir espacio separador si hay cambios
+--     if changes_str ~= "" then changes_str = " " .. changes_str end
+--   end
+--
+--   return " " .. branch_display .. changes_str
+-- end
+
 M.git = function()
-  local MiniGit
-  local git_present, _ = pcall(function() MiniGit = require('mini.git') end)
-  if not git_present then return "" end
+  local gitsigns_present, gitsigns = pcall(require, 'gitsigns')
+  if not gitsigns_present then return "" end
 
-  local buf_id = M.stbufnr()
-  if buf_id == 0 then return "" end
+  local current_buf = vim.api.nvim_get_current_buf()
 
-  local data_ok, data = pcall(MiniGit.get_buf_data, buf_id)
-  if not data_ok or not data or not data.head_name then return "" end
+  if not vim.b[current_buf].gitsigns_head then
+    return ""
+  end
 
-  local branch_display = " " .. data.head_name
+  local branch_name = vim.b[current_buf].gitsigns_head
+  if not branch_name or branch_name == "" then
+    return ""
+  end
+  local branch_display = " " .. branch_name --  (U+FA68)
+
   local changes_str = ""
+  local status_dict = vim.b[current_buf].gitsigns_status_dict
 
-  local summary_ok, summary = pcall(function() return vim.b[buf_id].minidiff_summary end)
-
-  if summary_ok and summary then
-    local added = summary.add or 0
-    local changed = summary.change or 0
-    local deleted = summary.delete or 0
+  if status_dict then
+    local added = status_dict.added or 0
+    local changed = status_dict.changed or 0
+    local removed = status_dict.removed or 0 -- 'removed' en gitsigns, no 'deleted'
 
     if added > 0 then
-      changes_str = changes_str .. " %#St_gitAdded# " .. added .. "%*"
+      changes_str = changes_str .. " %#St_gitAdded# " .. added .. "%*" --  (U+F055)
     end
-    -- Mostrar cambios ('~') solo si hay cambios y no solo adds/deletes
     if changed > 0 then
-      changes_str = changes_str .. " %#St_gitChanged# " .. changed .. "%*" -- Highlight para cambios
+      changes_str = changes_str .. " %#St_gitChanged# " .. changed .. "%*" --  (U+F459)
     end
-    if deleted > 0 then
-      changes_str = changes_str .. " %#St_gitRemoved# " .. deleted .. "%*"
+    if removed > 0 then
+      changes_str = changes_str .. " %#St_gitRemoved# " .. removed .. "%*" --  (U+F0FE)
     end
-    -- Añadir espacio separador si hay cambios
+
     if changes_str ~= "" then changes_str = " " .. changes_str end
   end
 

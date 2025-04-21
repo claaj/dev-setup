@@ -33,7 +33,8 @@ require('mini.pairs').setup({})
 require('mini.diff').setup({ view = { style = 'sign' } })
 
 -- See :help MiniGit.config
-require('mini.git').setup({})
+-- Doesnt work on Ubuntu
+-- require('mini.git').setup({})
 
 -- See :help MiniNotify.config
 require('mini.notify').setup({
@@ -126,6 +127,7 @@ starter.setup({
     { name = "Quit",            action = ":qa!",                  section = "Files" },
     { name = "Lazy",            action = ":Lazy",                 section = "Tools" },
     { name = "Mason",           action = ":Mason",                section = "Tools" },
+    { name = "Neogit",          action = ":Neogit",               section = "Tools" },
   },
   header = header_string,
   footer = "",
