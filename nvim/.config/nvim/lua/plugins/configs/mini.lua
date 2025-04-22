@@ -137,6 +137,19 @@ starter.setup({
   },
 })
 
+vim.api.nvim_create_autocmd("User", {
+  pattern = "LazyVimStarted",
+  callback = function(ev)
+    local stats = require("lazy").stats()
+    local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)
+    local pad_footer = string.rep(" ", 8)
+    starter.config.footer = "  Loaded " .. stats.loaded .. "/" .. stats.count .. " plugins in " .. ms .. "ms"
+    if vim.bo[ev.buf].filetype == "ministarter" then
+      pcall(starter.refresh)
+    end
+  end,
+})
+
 local miniclue = require('mini.clue')
 miniclue.setup({
   triggers = {

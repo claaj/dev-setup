@@ -32,6 +32,8 @@ return {
   },
   {
     "williamboman/mason-lspconfig.nvim",
+    cmd = "Mason",
+    event = { "BufReadPost", "BufNewFile" },
     dependencies = {
       "williamboman/mason.nvim",
       "WhoIsSethDaniel/mason-tool-installer.nvim",
@@ -43,13 +45,14 @@ return {
   {
     "saghen/blink.cmp",
     version = "*",
+    event = "InsertEnter",
     config = function()
       require "plugins.configs.completion"
     end,
   },
   {
     "neovim/nvim-lspconfig",
-    event = { "BufReadPre", "BufNewFile" },
+    event = { "BufReadPost", "BufNewFile" },
     dependencies = {
       "saghen/blink.cmp",
       "williamboman/mason-lspconfig.nvim"
@@ -74,6 +77,7 @@ return {
   },
   {
     "lewis6991/gitsigns.nvim",
+    event = { 'BufReadPre', 'BufNewFile' },
     opts = {
       signcolumn = true,
     }
