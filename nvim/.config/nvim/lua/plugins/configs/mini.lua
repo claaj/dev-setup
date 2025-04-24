@@ -97,6 +97,7 @@ hipatterns.setup({
 local starter = require('mini.starter')
 
 vim.api.nvim_set_hl(0, 'MiniStarterHeader', { fg = "#da291c", bold = true })
+vim.api.nvim_set_hl(0, 'MiniStarterFooter', { fg = "#c7c7c7", bold = true })
 
 local header = {
   "            @@@@  @@@@@              ",

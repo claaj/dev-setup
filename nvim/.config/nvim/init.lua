@@ -18,5 +18,7 @@ vim.opt.rtp:prepend(lazypath)
 local plugins = require("plugins")
 require("lazy").setup(plugins)
 
+vim.cmd [[colorscheme jellybeans]]
+
 vim.o.laststatus = 2
 vim.o.statusline = '%!v:lua.require("statusline")()'

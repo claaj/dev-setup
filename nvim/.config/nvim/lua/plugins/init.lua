@@ -83,11 +83,10 @@ return {
     }
   },
   {
-    "Mofiqul/vscode.nvim",
+    "wtfox/jellybeans.nvim",
+    lazy = false,
     priority = 1000,
-    config = function()
-      vim.cmd.colorscheme "vscode"
-    end
+    opts = { italics = false },
   },
   {
     "marnym/typst-watch.nvim",
@@ -98,4 +97,12 @@ return {
     "brianhuster/live-preview.nvim",
     cmd = "LivePreview",
   },
+  {
+    "MeanderingProgrammer/render-markdown.nvim",
+    dependencies = "nvim-treesitter/nvim-treesitter",
+    ft = { "markdown", "vimwiki" },
+    config = function()
+      require "plugins.configs.markdown"
+    end
+  }
 }
