@@ -1,18 +1,18 @@
 #!/bin/bash
 
-NERD_FONTS_VERSION="v3.3.0"
+NERD_FONTS_VERSION="v3.4.0"
 
-URL="https://github.com/ryanoasis/nerd-fonts/releases/download/$NERD_FONTS_VERSION/JetBrainsMono.zip"
+URL="https://github.com/ryanoasis/nerd-fonts/releases/download/$NERD_FONTS_VERSION/AdwaitaMono.zip"
 
 FONT_DIR="$HOME/.local/share/fonts"
 
 mkdir -p "$FONT_DIR"
 
-curl -L -o "/tmp/JetBrainsMono.zip" "$URL"
+curl -L -o "/tmp/AdwaitaMono.zip" "$URL"
 
-unzip -o "/tmp/JetBrainsMono.zip" -d "$FONT_DIR"
+unzip -o "/tmp/AdwaitaMono.zip" -d "$FONT_DIR"
 
-rm "/tmp/JetBrainsMono.zip"
+rm "/tmp/AdwaitaMono.zip"
 
 fc-cache -f "$FONT_DIR"
 
