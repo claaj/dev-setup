@@ -2,31 +2,15 @@
 
 This repo contains a my `neovim` and `tmux` config that I use for development.
 
-Also has the fontalias with `JetBrainsMono NL` and `Nerd Font Symbols`.
+Makefile installs all dependencies using `brew` and `brew` itself.
 
-Dependencies:
-- `neovim`
-- `tmux`
-- `perl`
-- `npm`
-- `cargo`
-- `make`
-- `ninja`
-- `meson`
-- `stow`
-- `fzf`
+The idea of this is to be able to install my setup in any linux distro.
 
-~~~
-make # Install fonts and runs stow for nvim, fontconfig and tmux
-~~~
+Also has a fontalias to set `Adwaita Mono Nerd Font` as the default Monospace font.
 
-## Install apps
-
+## Setup
 ~~~
-cargo install starship --locked
-~~~
-
-~~~
-cargo install tmux-sessionizer --locked
+# Super simple
+make
 ~~~
 
