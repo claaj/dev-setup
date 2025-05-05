@@ -7,8 +7,13 @@ brew_setup:
 	echo 'eval "$$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> "$$HOME/.bashrc"
 
 utils:
-	$(BREW) install llvm zig cmake just gcc meson ninja python pip-tools pipx rustup node nodejs
-	$(BREW) install nvim tmux stow fzf eza fd ripgrep typst htop fastfetch tmux-sessionizer starship
+	$(BREW) install llvm zig cmake 
+	$(BREW) install just meson ninja 
+	$(BREW) install python pip-tools pipx 
+	$(BREW) install rustup node nodejs lld
+	$(BREW) install nvim tmux stow fzf 
+	$(BREW) install eza fd ripgrep typst
+	$(BREW) install htop fastfetch tmux-sessionizer starship
 	echo 'eval "$$(starship init bash)"' >> "$$HOME/.bashrc"
 	/home/linuxbrew/.linuxbrew/bin/rustup-init -y
 	. "$$HOME/.cargo/env"
