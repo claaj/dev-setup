@@ -31,11 +31,11 @@ return {
     end
   },
   {
-    "williamboman/mason-lspconfig.nvim",
+    "mason-org/mason-lspconfig.nvim",
     cmd = "Mason",
     event = { "BufReadPost", "BufNewFile" },
     dependencies = {
-      "williamboman/mason.nvim",
+      "mason-org/mason.nvim",
       "WhoIsSethDaniel/mason-tool-installer.nvim",
     },
     config = function()
@@ -55,7 +55,7 @@ return {
     event = { "BufReadPost", "BufNewFile" },
     dependencies = {
       "saghen/blink.cmp",
-      "williamboman/mason-lspconfig.nvim"
+      "mason-org/mason-lspconfig.nvim"
     },
     config = function()
       require "plugins.configs.lsp"
