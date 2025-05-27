@@ -70,17 +70,6 @@ vim.diagnostic.config({
   },
 })
 
-local server_capabilities = require("blink.cmp").get_lsp_capabilities()
-
-mason_lspconfig.setup_handlers({
-  -- default handler for installed servers
-  function(server_name)
-    lspconfig[server_name].setup({
-      capabilities = server_capabilities,
-    })
-  end,
-})
-
 lspconfig.clangd.setup({
   cmd = {
     "clangd",
