@@ -70,7 +70,7 @@ vim.diagnostic.config({
   },
 })
 
-lspconfig.clangd.setup({
+vim.lsp.config('clangd', {
   cmd = {
     "clangd",
     "--background-index",
