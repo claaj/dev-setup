@@ -1,11 +1,3 @@
-local lspconfig = require("lspconfig")
-
-local ok, mason_lspconfig = pcall(require, "mason-lspconfig")
-if not ok then
-  require("mason").setup({})
-  mason_lspconfig = require("mason-lspconfig")
-end
-
 local keymap = vim.keymap -- for conciseness
 
 vim.api.nvim_create_autocmd("LspAttach", {
@@ -80,10 +72,5 @@ vim.lsp.config('clangd', {
     "--compile-commands-dir=build",
   },
 })
-
--- Disable semantic highlight
-for _, group in ipairs(vim.fn.getcompletion("@lsp", "highlight")) do
-  vim.api.nvim_set_hl(0, group, {})
-end
 
 vim.cmd([[autocmd BufRead,BufNewFile *.json set filetype=jsonc]])

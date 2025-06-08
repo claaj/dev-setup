@@ -32,15 +32,16 @@ return {
   },
   {
     "mason-org/mason-lspconfig.nvim",
-    cmd = "Mason",
-    event = { "BufReadPost", "BufNewFile" },
+    opts = {},
     dependencies = {
-      "mason-org/mason.nvim",
+      {
+        "mason-org/mason.nvim",
+        config = function()
+          require "plugins.configs.mason"
+        end
+      },
       "WhoIsSethDaniel/mason-tool-installer.nvim",
-    },
-    config = function()
-      require "plugins.configs.mason"
-    end
+    }
   },
   {
     "saghen/blink.cmp",
