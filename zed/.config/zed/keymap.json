@@ -1,0 +1,67 @@
+[
+  {
+    "context": "Editor && vim_mode == normal && vim_operator == none && !VimWaiting",
+    "bindings": {
+      "space f f": "file_finder::Toggle",
+      "space f t": "workspace::ToggleLeftDock",
+      "space s v": "pane::SplitRight",
+      "space s h": "pane::SplitDown",
+      "space b b": "tab_switcher::ToggleAll",
+      "space p p": "projects::OpenRecent",
+      "space g g": [
+        "task::Spawn",
+        {
+          "task_name": "start gitui",
+          "reveal_target": "center"
+        }
+      ],
+      "space b k": "pane::CloseActiveItem",
+      "alt-d 1": "workspace::ToggleBottomDock",
+      "alt-d 2": "terminal_panel::ToggleFocus",
+      "alt-d 3": "debug_panel::ToggleFocus",
+    }
+  },
+  {
+    "context": "Terminal",
+    "bindings": {
+      "alt-d 1": "workspace::ToggleBottomDock",
+      "alt-d 2": "terminal_panel::ToggleFocus",
+      "alt-d 3": "debug_panel::ToggleFocus",
+      "alt-d c": "workspace::NewTerminal",
+      "alt-d x": "pane::CloseActiveItem",
+    },
+  },
+  {
+    "context": "ProjectPanel",
+    "bindings": {
+      "escape": "workspace::ToggleLeftDock"
+    }
+  },
+  {
+    "context": "MarkdownPreview",
+    "bindings": {
+      "space b b": "tab_switcher::ToggleAll",
+      "escape": "pane::CloseActiveItem"
+    }
+  },
+  {
+    "context": "Editor && vim_mode == insert && !menu",
+    "bindings": {
+      "j k": "vim::SwitchToNormalMode"
+    }
+  },
+  {
+    "context": "Editor && vim_mode == normal && !menu",
+    "bindings": {
+      "gra": "editor::ToggleCodeActions",
+    }
+  },
+  {
+    "bindings": {
+      "ctrl-h": "workspace::ActivatePaneLeft",
+      "ctrl-l": "workspace::ActivatePaneRight",
+      "ctrl-k": "workspace::ActivatePaneUp",
+      "ctrl-j": "workspace::ActivatePaneDown",
+    }
+  },
+]

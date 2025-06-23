@@ -1,0 +1,88 @@
+{
+  "auto_install_extensions": {
+    "assembly": true,
+    "colored-zed-icons-theme": true,
+    "dockerfile": true,
+    "html": true,
+    "jellybeans-vim": true,
+    "neocmake": true,
+    "typst": true,
+    "zig": true,
+    "just": true
+  },
+  "telemetry": {
+    "metrics": false,
+    "diagnostics": false
+  },
+  "vim_mode": true,
+  "format_on_save": "language_server",
+  "relative_line_numbers": true,
+  "ui_font_size": 16,
+  "buffer_font_size": 16,
+  "buffer_font_family": "AdwaitaMono Nerd Font Mono",
+  "theme": {
+    "mode": "system",
+    "light": "One Light",
+    "dark": "Jellybeans"
+  },
+  "icon_theme": {
+    "mode": "system",
+    "light": "Colored Zed Icons Theme Light",
+    "dark": "Colored Zed Icons Theme Dark"
+  },
+  "tab_bar": {
+    "show": false,
+    "show_nav_history_buttons": false,
+    "show_tab_bar_buttons": false
+  },
+  "cursor_blink": false,
+  "scrollbar": {
+    "show": "never"
+  },
+  "dev_containers": {
+    "enabled": true
+  },
+  "terminal": {
+    "vim_mode": true,
+    "default_height": 9999,
+    "detect_venv": {
+      "on": {
+        "directories": [
+          ".env",
+          "env",
+          ".venv",
+          "venv"
+        ],
+        "activate_script": "default"
+      }
+    }
+  },
+  "lsp": {
+    "rust-analyzer": {
+      "initialization_options": {
+        "check": {
+          "command": "clippy" // rust-analyzer.check.command (default: "check")
+        }
+      }
+    },
+    "yaml-language-server": {
+      "settings": {
+        "yaml": {
+          "keyOrdering": true // Enforces alphabetical ordering of keys in maps
+        }
+      }
+    }
+  },
+  "ssh_connections": [
+    {
+      "host": "opendds-sandbox-ng.devpod",
+      "projects": [
+        {
+          "paths": [
+            "/workspace"
+          ]
+        }
+      ]
+    }
+  ]
+}
