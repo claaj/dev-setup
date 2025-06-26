@@ -51,10 +51,9 @@
   },
   {
     "label": "start gitui",
-    "command": "gitui -d $ZED_WORKTREE_ROOT",
+    // "command": "gitui -d $ZED_WORKTREE_ROOT",
+    "command": "gitui",
     "hide": "on_success",
-    "shell": {
-      "program": "sh"
-    }
+    "shell": "system"
   },
 ]
