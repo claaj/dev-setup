@@ -13,12 +13,3 @@ Also has a fontalias to set `Adwaita Mono Nerd Font` as the default Monospace fo
 # Super simple
 make
 ~~~
-
-To use `zed` in `Ubuntu 20.04` is necesary to update `Mesa` version.
-
-It can be done using the following ppa:
-
-~~~
-sudo add-apt-repository ppa:kisak/turtle
-sudo apt update
-~~~
