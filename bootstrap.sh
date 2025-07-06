@@ -9,18 +9,10 @@
 /home/linuxbrew/.linuxbrew/bin/brew install eza
 /home/linuxbrew/.linuxbrew/bin/brew install fd
 /home/linuxbrew/.linuxbrew/bin/brew install ripgrep
-/home/linuxbrew/.linuxbrew/bin/brew install typst
-/home/linuxbrew/.linuxbrew/bin/brew install btop
-/home/linuxbrew/.linuxbrew/bin/brew install fastfetch
 /home/linuxbrew/.linuxbrew/bin/brew install tmux-sessionizer
-/home/linuxbrew/.linuxbrew/bin/brew install starship
-/home/linuxbrew/.linuxbrew/bin/brew install gitui
-/home/linuxbrew/.linuxbrew/bin/brew install --cask font-adwaita font-adwaita-mono-nerd-font font-ibm-plex-sans font-ibm-plex-math font-twitter-color-emoji
 
-touch ~/.bashrc
-
-echo 'eval "$$(starship init bash)"' >> "~/.bashrc"
-echo 'alias vim="nvim"' >> "~/.bashrc"
-echo 'alias ll="eza -la --icons --color=always"' >> "~/.bashrc"
+echo 'eval "$$(starship init bash)"' >> "$$HOME/.bashrc"
+echo 'alias vim="nvim"' >> "$$HOME/.bashrc"
+echo 'alias ll="eza -la --icons --color=always"' >> "$$HOME/.bashrc"
 
 /home/linuxbrew/.linuxbrew/bin/stow fontconfig tmux nvim zed
