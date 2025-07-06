@@ -11,8 +11,7 @@
 /home/linuxbrew/.linuxbrew/bin/brew install ripgrep
 /home/linuxbrew/.linuxbrew/bin/brew install tmux-sessionizer
 
-echo 'eval "$$(starship init bash)"' >> "$$HOME/.bashrc"
-echo 'alias vim="nvim"' >> "$$HOME/.bashrc"
-echo 'alias ll="eza -la --icons --color=always"' >> "$$HOME/.bashrc"
+echo 'alias vim="nvim"' >> $HOME/.bashrc
+echo 'alias ll="eza -la --icons --color=always"' >> $HOME/.bashrc
 
 /home/linuxbrew/.linuxbrew/bin/stow fontconfig tmux nvim zed
