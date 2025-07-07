@@ -50,22 +50,22 @@ require('mini.bufremove').setup({})
 vim.keymap.set('n', '<leader>bk', '<cmd>lua pcall(MiniBufremove.delete)<cr>', { desc = 'Close buffer' })
 
 -- See :help MiniFiles.config
-local mini_files = require('mini.files')
-mini_files.setup({
-  mappings = {
-    close       = '<Esc>',
-    go_in       = '<Right>',
-    go_out      = '<Left>',
-    synchronize = '=',
-  },
-})
+-- local mini_files = require('mini.files')
+-- mini_files.setup({
+--   mappings = {
+--     close       = '<Esc>',
+--     go_in       = '<Right>',
+--     go_out      = '<Left>',
+--     synchronize = '=',
+--   },
+-- })
 -- Toggle file explorer
-vim.keymap.set('n', '<leader>ft', function()
-  if mini_files.close() then
-    return
-  end
-  mini_files.open()
-end, { desc = 'File explorer' })
+-- vim.keymap.set('n', '<leader>ft', function()
+--   if mini_files.close() then
+--     return
+--   end
+--   mini_files.open()
+-- end, { desc = 'File explorer' })
 
 -- See :help MiniPick.config
 require('mini.pick').setup({})
