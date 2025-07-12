@@ -94,5 +94,5 @@ require("blink.cmp").setup({
     },
   },
 
-  fuzzy = { implementation = "prefer_rust" },
+  fuzzy = { implementation = "lua" },
 })
