@@ -12,10 +12,7 @@ mason.setup({
 })
 mason_tool_installer.setup({
   ensure_installed = {
-    "prettier",
-    "black",
     "clang-format",
-    "isort",
     "stylua",
   },
 })

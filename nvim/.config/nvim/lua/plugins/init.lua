@@ -34,17 +34,13 @@ return {
     "mason-org/mason-lspconfig.nvim",
     opts = {
       ensure_installed = {
-        "bashls",
         "clangd",
-        "cmake",
-        "jsonls",
+        "neocmake",
         "lua_ls",
         "marksman",
-        "pyright",
+        "basedpyright",
         "rust_analyzer",
-        "tinymist",
-        "yamlls",
-        "zls",
+        "ruff"
       },
     },
     dependencies = {
