@@ -1,17 +1,15 @@
 #!/usr/bin/env bash
 
-/home/linuxbrew/.linuxbrew/bin/brew install just
-/home/linuxbrew/.linuxbrew/bin/brew install pipx
-/home/linuxbrew/.linuxbrew/bin/brew install node
-/home/linuxbrew/.linuxbrew/bin/brew install tmux
-/home/linuxbrew/.linuxbrew/bin/brew install stow
-/home/linuxbrew/.linuxbrew/bin/brew install fzf
-/home/linuxbrew/.linuxbrew/bin/brew install eza
-/home/linuxbrew/.linuxbrew/bin/brew install fd
-/home/linuxbrew/.linuxbrew/bin/brew install ripgrep
-/home/linuxbrew/.linuxbrew/bin/brew install tmux-sessionizer
+# Descargar e instalar Neovim
+wget https://github.com/neovim/neovim/releases/download/v0.11.3/nvim-linux-x86_64.tar.gz
+tar xzf nvim-linux-x86_64.tar.gz
+mkdir -p $HOME/.local/bin
+mv nvim-linux-x86_64 $HOME/.local/nvim
+ln -sf $HOME/.local/nvim/bin/nvim $HOME/.local/bin/nvim
+rm nvim-linux-x86_64.tar.gz
 
-echo 'alias vim="nvim"' >> $HOME/.bashrc
-echo 'alias ll="eza -la --icons --color=always"' >> $HOME/.bashrc
+echo 'alias vim="$HOME/.local/nvim/bin/nvim"' >> $HOME/.bashrc
 
-/home/linuxbrew/.linuxbrew/bin/stow fontconfig tmux nvim zed
+echo "Neovim instalado correctamente"
+
+stow nvim/ tmux/
