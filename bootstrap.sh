@@ -8,8 +8,8 @@ mv bob-linux-x86_64/bob ~/.local/bin/bob
 rm bob-linux-x86_64.zip
 rm -r bob-linux-x86_64
 
-echo 'alias vim="nvim"' >> "~/.bashrc"
-echo 'export PATH=$PATH:$HOME/.local/share/bob/nvim-bin' >> "~/.bashrc"
+echo 'alias vim="nvim"' >> "$HOME/.bashrc"
+echo 'export PATH=$PATH:$HOME/.local/share/bob/nvim-bin' >> "$HOME/.bashrc"
 
 echo "bob-nvim instalado correctamente"
 
