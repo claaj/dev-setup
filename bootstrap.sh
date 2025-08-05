@@ -2,10 +2,11 @@
 
 wget https://github.com/MordechaiHadad/bob/releases/download/v4.1.2/bob-linux-x86_64.zip
 unzip bob-linux-x86_64.zip
-chmod +x bob
+chmod +x bob-linux-x86_64/bob
 mkdir -p ~/.local/bin
-mv bob ~/.local/bin/bob
+mv bob-linux-x86_64/bob ~/.local/bin/bob
 rm bob-linux-x86_64.zip
+rm -r bob-linux-x86_64
 
 echo 'alias vim="nvim"' >> "~/.bashrc"
 echo 'export PATH=$PATH:$HOME/.local/share/bob/nvim-bin' >> "~/.bashrc"
