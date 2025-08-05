@@ -5,6 +5,7 @@ all: brew_setup fonts utils zed run_stow
 brew_setup:
 	/bin/bash -c "$$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 	echo 'eval "$$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> "$$HOME/.bashrc"
+	echo "export PATH=$$PATH:$$HOME/.local/share/bob/nvim-bin" >> "$$HOME/.bashrc"
 
 utils:
 	$(BREW) install llvm cmake
@@ -20,7 +21,7 @@ utils:
 	$(BREW) install node
 	$(BREW) install nodejs
 	$(BREW) install lld
-	$(BREW) install nvim
+	$(BREW) install bob
 	$(BREW) install tmux
 	$(BREW) install stow
 	$(BREW) install fzf
