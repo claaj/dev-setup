@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-wget https://github.com/MordechaiHadad/bob/releases/download/v4.0.3/bob-linux-x86_64.zip
+wget https://github.com/MordechaiHadad/bob/releases/download/v4.1.2/bob-linux-x86_64.zip
 unzip bob-linux-x86_64.zip
 chmod +x bob
 mkdir -p ~/.local/bin
