@@ -41,6 +41,7 @@ vim.pack.add({
   { src = "https://github.com/lewis6991/gitsigns.nvim" },
   { src = "https://github.com/saghen/blink.cmp" },
   { src = "https://github.com/stevearc/conform.nvim" },
+  { src = "https://github.com/nvim-lualine/lualine.nvim" },
 })
 
 require("mini.icons").setup()
@@ -155,6 +156,12 @@ require("nvim-treesitter.configs").setup({
   }
 })
 
+require('lualine').setup {
+  options = {
+    theme = 'jellybeans'
+  }
+}
+
 -- Keymaps
 local keymap = vim.keymap
 keymap.set({ 'n', 'x' }, 'gy', '"+y', { desc = 'Copy to clipboard' })
@@ -171,8 +178,15 @@ keymap.set("n", "<leader>fs", "<cmd>:w<CR>", { desc = "Save file" })
 keymap.set("n", "<leader>qq", "<cmd>:q<CR>", { desc = "Quit" })
 keymap.set("n", "<leader>bk", "<cmd>:bwipeout<CR>", { desc = "Kill current buffer" })
 keymap.set('n', '<leader>ff', ":Pick files<CR>")
+keymap.set('n', '<leader>bb', ":Pick buffers<CR>")
 keymap.set('n', '<leader>gg', ":Neogit<CR>")
-keymap.set('n', '<leader>ft', ":Ex<CR>")
+vim.keymap.set('n', '<leader>ft', function()
+  if vim.bo.filetype == 'netrw' then
+    vim.cmd('quit')
+  else
+    vim.cmd('Lexplore')
+  end
+end, { silent = true, desc = 'Toggle Netrw' })
 
 -- LSP
 vim.api.nvim_create_autocmd("TextYankPost", {
