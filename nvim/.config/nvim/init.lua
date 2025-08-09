@@ -32,7 +32,7 @@ opt.clipboard = "unnamedplus"
 vim.pack.add({
   { src = "https://github.com/echasnovski/mini.nvim" },
   { src = "https://github.com/nvim-treesitter/nvim-treesitter" },
-  { src = "https://github.com/WTFox/jellybeans.nvim" },
+  { src = "https://github.com/miikanissi/modus-themes.nvim" },
   { src = "https://github.com/neovim/nvim-lspconfig" },
   { src = "https://github.com/mason-org/mason.nvim" },
   { src = "https://github.com/mason-org/mason-lspconfig.nvim" },
@@ -156,11 +156,7 @@ require("nvim-treesitter.configs").setup({
   }
 })
 
-require('lualine').setup {
-  options = {
-    theme = 'jellybeans'
-  }
-}
+require('lualine').setup()
 
 -- Keymaps
 local keymap = vim.keymap
@@ -236,5 +232,4 @@ vim.lsp.config('clangd', {
 vim.cmd([[autocmd BufRead,BufNewFile *.json set filetype=jsonc]])
 
 -- UI
-vim.cmd [[colorscheme jellybeans]]
-vim.cmd(":hi statusline guibg=NONE")
+vim.cmd [[colorscheme modus_vivendi ]]
