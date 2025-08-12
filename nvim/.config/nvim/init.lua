@@ -1,55 +1,37 @@
--- Tiny nvim config --
-
--- Leader
-vim.g.mapleader = " "
-vim.g.bufferleader = " "
-
--- Options --
-local opt = vim.opt
-opt.tabstop = 2
-opt.shiftwidth = 2
-opt.expandtab = true
-opt.autoindent = true
-opt.wrap = false
-opt.ignorecase = true
-opt.smartcase = true
-opt.cursorline = true
-opt.termguicolors = true
-opt.background = "dark"
-opt.signcolumn = "yes"
-opt.backspace = "indent,eol,start"
-opt.splitright = true
-opt.splitbelow = true
-opt.swapfile = false
-opt.number = true
-opt.relativenumber = true
-opt.numberwidth = 4
-opt.signcolumn = "yes"
-opt.winborder = "rounded"
-opt.clipboard = "unnamedplus"
+-- Tiny nvim config -
 
 --- Plugins ---
 vim.pack.add({
   { src = "https://github.com/echasnovski/mini.nvim" },
-  { src = "https://github.com/nvim-treesitter/nvim-treesitter" },
-  { src = "https://github.com/miikanissi/modus-themes.nvim" },
-  { src = "https://github.com/neovim/nvim-lspconfig" },
   { src = "https://github.com/mason-org/mason.nvim" },
   { src = "https://github.com/mason-org/mason-lspconfig.nvim" },
-  { src = "https://github.com/NeogitOrg/neogit" },
-  { src = "https://github.com/nvim-lua/plenary.nvim" },
-  { src = "https://github.com/lewis6991/gitsigns.nvim" },
-  { src = "https://github.com/saghen/blink.cmp" },
+  { src = "https://github.com/neovim/nvim-lspconfig" },
   { src = "https://github.com/stevearc/conform.nvim" },
-  { src = "https://github.com/nvim-lualine/lualine.nvim" },
+  { src = "https://github.com/tpope/vim-fugitive" },
+  { src = "https://github.com/saghen/blink.cmp" },
+  { src = "https://github.com/miikanissi/modus-themes.nvim" },
 })
 
-require("mini.icons").setup()
+require('mini.icons').setup({ style = 'glyph' })
+require('mini.ai').setup({ n_lines = 500 })
 require("mini.pick").setup()
+require('mini.comment').setup({})
+require('mini.surround').setup({})
+require('mini.extra').setup({})
+require('mini.colors').setup({})
+require('mini.operators').setup({})
+require('mini.move').setup({})
+require('mini.pairs').setup({})
+require('mini.diff').setup({ view = { style = 'sign' } })
+require('mini.git').setup({})
+require('mini.bufremove').setup({})
+require("mini.statusline").setup()
+require('mini.notify').setup({
+  lsp_progress = { enable = false },
+})
+
 require("mason").setup()
 require("mason-lspconfig").setup()
-require("mason-lspconfig").setup()
-require("gitsigns").setup()
 require("conform").setup({
   formatters_by_ft = {
     lua = { "stylua --indent-type Spaces --indent-width 4" },
@@ -61,6 +43,7 @@ require("conform").setup({
     timeout_ms = 1000,
   },
 })
+
 require("blink.cmp").setup({
   sources = {
     default = { 'lsp', 'path', 'snippets', 'buffer' },
@@ -94,12 +77,7 @@ require("blink.cmp").setup({
       show_on_insert_on_trigger_character = false,
     },
   },
-  completion = {
-    documentation = {
-      auto_show = true,
-      auto_show_delay_ms = 500,
-    }
-  },
+
   cmdline = {
     enabled = true,
     keymap = { preset = "cmdline" },
@@ -132,31 +110,42 @@ require("blink.cmp").setup({
   fuzzy = { implementation = "lua" },
 })
 
-require("nvim-treesitter.configs").setup({
-  highlight = {
-    enable = true,
-    additional_vim_regex_highlighting = true,
-    use_languagetree = true,
-  },
-  indent = { enable = true, disable = { "python" } },
-  auto_install = true,
-  ensure_installed = {
-    "json",
-    "lua",
-    "c",
-    "rust",
-    "python",
-    "bash",
-    "cpp",
-    "gitignore",
-    "markdown",
-    "markdown_inline",
-    "comment",
-    "printf"
-  }
-})
+-- Leader
+vim.g.mapleader = " "
+vim.g.bufferleader = " "
 
-require('lualine').setup()
+-- Options --
+local opt = vim.opt
+opt.tabstop = 2
+opt.shiftwidth = 2
+opt.expandtab = true
+opt.autoindent = true
+opt.wrap = false
+opt.ignorecase = true
+opt.smartcase = true
+opt.cursorline = true
+opt.termguicolors = true
+opt.background = "dark"
+opt.signcolumn = "yes"
+opt.backspace = "indent,eol,start"
+opt.splitright = true
+opt.splitbelow = true
+opt.swapfile = false
+opt.number = true
+opt.relativenumber = true
+opt.numberwidth = 4
+opt.signcolumn = "yes"
+opt.winborder = "rounded"
+opt.clipboard = "unnamedplus"
+
+vim.notify = require('mini.notify').make_notify({})
+vim.ui.select = MiniPick.ui_select
+
+vim.api.nvim_create_autocmd("TextYankPost", {
+  callback = function()
+    vim.highlight.on_yank({ timeout = 200 })
+  end,
+})
 
 -- Keymaps
 local keymap = vim.keymap
@@ -172,25 +161,12 @@ keymap.set("n", "<leader>sk", "<cmd>close<CR>", { desc = "Close current split" }
 keymap.set("n", "<leader>fq", "<cmd>:wq<CR>", { desc = "Save & exit" })
 keymap.set("n", "<leader>fs", "<cmd>:w<CR>", { desc = "Save file" })
 keymap.set("n", "<leader>qq", "<cmd>:q<CR>", { desc = "Quit" })
-keymap.set("n", "<leader>bk", "<cmd>:bwipeout<CR>", { desc = "Kill current buffer" })
 keymap.set('n', '<leader>ff', ":Pick files<CR>")
 keymap.set('n', '<leader>bb', ":Pick buffers<CR>")
-keymap.set('n', '<leader>gg', ":Neogit<CR>")
-vim.keymap.set('n', '<leader>ft', function()
-  if vim.bo.filetype == 'netrw' then
-    vim.cmd('quit')
-  else
-    vim.cmd('Lexplore')
-  end
-end, { silent = true, desc = 'Toggle Netrw' })
+keymap.set('n', '<leader>gg', ":tab G<CR>")
+keymap.set('n', '<leader>bk', '<cmd>lua pcall(MiniBufremove.delete)<cr>', { desc = 'Close buffer' })
 
 -- LSP
-vim.api.nvim_create_autocmd("TextYankPost", {
-  callback = function()
-    vim.highlight.on_yank({ timeout = 200 })
-  end,
-})
-
 vim.api.nvim_create_autocmd('LspAttach', {
   callback = function(ev)
     keymap.set("n", "grd", vim.diagnostic.open_float, { desc = "Show line diagnostics" })
