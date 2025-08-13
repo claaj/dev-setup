@@ -3,24 +3,20 @@
 --- Plugins ---
 vim.pack.add({
   { src = "https://github.com/echasnovski/mini.nvim" },
+  { src = "https://github.com/nvim-treesitter/nvim-treesitter" },
+  { src = "https://github.com/neovim/nvim-lspconfig" },
   { src = "https://github.com/mason-org/mason.nvim" },
   { src = "https://github.com/mason-org/mason-lspconfig.nvim" },
-  { src = "https://github.com/neovim/nvim-lspconfig" },
   { src = "https://github.com/stevearc/conform.nvim" },
   { src = "https://github.com/tpope/vim-fugitive" },
   { src = "https://github.com/saghen/blink.cmp" },
-  { src = "https://github.com/miikanissi/modus-themes.nvim" },
+  { src = "https://github.com/WTFox/jellybeans.nvim" },
+  { src = "https://github.com/christoomey/vim-tmux-navigator" },
 })
 
 require('mini.icons').setup({ style = 'glyph' })
-require('mini.ai').setup({ n_lines = 500 })
 require("mini.pick").setup()
-require('mini.comment').setup({})
-require('mini.surround').setup({})
-require('mini.extra').setup({})
 require('mini.colors').setup({})
-require('mini.operators').setup({})
-require('mini.move').setup({})
 require('mini.pairs').setup({})
 require('mini.diff').setup({ view = { style = 'sign' } })
 require('mini.git').setup({})
@@ -29,14 +25,19 @@ require("mini.statusline").setup()
 require('mini.notify').setup({
   lsp_progress = { enable = false },
 })
+local mini_files = require('mini.files')
+mini_files.setup({
+  mappings = {
+    close       = '<Esc>',
+    go_in       = '<Right>',
+    go_out      = '<Left>',
+    synchronize = '=',
+  },
+})
 
 require("mason").setup()
 require("mason-lspconfig").setup()
 require("conform").setup({
-  formatters_by_ft = {
-    lua = { "stylua --indent-type Spaces --indent-width 4" },
-    rust = { "rustfmt", lsp_format = "fallback" },
-  },
   format_on_save = {
     lsp_fallback = true,
     async = false,
@@ -81,16 +82,6 @@ require("blink.cmp").setup({
   cmdline = {
     enabled = true,
     keymap = { preset = "cmdline" },
-    sources = function()
-      local type = vim.fn.getcmdtype()
-      if type == "/" or type == "?" then
-        return { "buffer" }
-      end
-      if type == ":" or type == "@" then
-        return { "cmdline" }
-      end
-      return {}
-    end,
     completion = {
       trigger = {
         show_on_blocked_trigger_characters = {},
@@ -110,12 +101,43 @@ require("blink.cmp").setup({
   fuzzy = { implementation = "lua" },
 })
 
+require("nvim-treesitter.configs").setup({
+  highlight = {
+    enable = true,
+    additional_vim_regex_highlighting = true,
+    use_languagetree = true,
+  },
+
+  indent = { enable = true, disable = { "python" } },
+
+  auto_install = true,
+
+  ensure_installed = {
+    "json",
+    "lua",
+    "c",
+    "rust",
+    "python",
+    "bash",
+    "cpp",
+    "gitignore",
+    "markdown",
+    "markdown_inline",
+    "comment",
+    "printf",
+    "diff",
+    "ini",
+    "toml"
+  }
+})
+
 -- Leader
 vim.g.mapleader = " "
 vim.g.bufferleader = " "
 
 -- Options --
 local opt = vim.opt
+opt.mouse = ""
 opt.tabstop = 2
 opt.shiftwidth = 2
 opt.expandtab = true
@@ -136,7 +158,7 @@ opt.relativenumber = true
 opt.numberwidth = 4
 opt.signcolumn = "yes"
 opt.winborder = "rounded"
-opt.clipboard = "unnamedplus"
+opt.clipboard = ""
 
 vim.notify = require('mini.notify').make_notify({})
 vim.ui.select = MiniPick.ui_select
@@ -153,18 +175,28 @@ keymap.set({ 'n', 'x' }, 'gy', '"+y', { desc = 'Copy to clipboard' })
 keymap.set({ 'n', 'x' }, 'gp', '"+p', { desc = 'Paste clipboard content' })
 keymap.set("i", "jk", "<ESC>", { desc = "Exit insert mode with jk" })
 keymap.set("i", "kj", "<ESC>", { desc = "Exit insert mode with jk" })
-keymap.set("n", "<leader>nh", ":nohl<CR>", { desc = "Clear search highlights" })
+keymap.set("n", "<leader>n", ":nohl<CR>", { desc = "Clear search highlights" })
 keymap.set("n", "<leader>sv", "<C-w>v", { desc = "Split window vertically" })
 keymap.set("n", "<leader>sh", "<C-w>s", { desc = "Split window horizontally" })
 keymap.set("n", "<leader>se", "<C-w>=", { desc = "Make splits equal size" })
 keymap.set("n", "<leader>sk", "<cmd>close<CR>", { desc = "Close current split" })
-keymap.set("n", "<leader>fq", "<cmd>:wq<CR>", { desc = "Save & exit" })
-keymap.set("n", "<leader>fs", "<cmd>:w<CR>", { desc = "Save file" })
 keymap.set("n", "<leader>qq", "<cmd>:q<CR>", { desc = "Quit" })
 keymap.set('n', '<leader>ff', ":Pick files<CR>")
 keymap.set('n', '<leader>bb', ":Pick buffers<CR>")
-keymap.set('n', '<leader>gg', ":tab G<CR>")
+keymap.set('n', '<leader>gg', ":G<CR>")
 keymap.set('n', '<leader>bk', '<cmd>lua pcall(MiniBufremove.delete)<cr>', { desc = 'Close buffer' })
+keymap.set('n', '<C-h>', '<Cmd>TmuxNavigateLeft<CR>')
+keymap.set('n', '<C-j>', '<Cmd>TmuxNavigateDown<CR>')
+keymap.set('n', '<C-k>', '<Cmd>TmuxNavigateUp<CR>')
+keymap.set('n', '<C-l>', '<Cmd>TmuxNavigateRight<CR>')
+keymap.set('n', '<leader>ft', function()
+  if mini_files.close() then
+    return
+  end
+  mini_files.open()
+end, { desc = 'File explorer' })
+
+
 
 -- LSP
 vim.api.nvim_create_autocmd('LspAttach', {
@@ -199,7 +231,6 @@ vim.lsp.config('clangd', {
     "clangd",
     "--background-index",
     "--clang-tidy",
-    "--log=verbose",
     "--fallback-style=Google",
     "--compile-commands-dir=build",
   },
@@ -208,4 +239,4 @@ vim.lsp.config('clangd', {
 vim.cmd([[autocmd BufRead,BufNewFile *.json set filetype=jsonc]])
 
 -- UI
-vim.cmd [[colorscheme modus_vivendi ]]
+vim.cmd [[ colorscheme jellybeans ]]
