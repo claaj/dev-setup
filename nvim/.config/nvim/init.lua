@@ -165,7 +165,10 @@ require("nvim-treesitter.configs").setup({
     "printf",
     "diff",
     "ini",
-    "toml"
+    "toml",
+    "just",
+    "make",
+    "cmake",
   }
 })
 
