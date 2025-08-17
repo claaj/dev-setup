@@ -8,8 +8,9 @@ vim.pack.add({
   { src = "https://github.com/mason-org/mason.nvim" },
   { src = "https://github.com/mason-org/mason-lspconfig.nvim" },
   { src = "https://github.com/stevearc/conform.nvim" },
-  { src = "https://github.com/tpope/vim-fugitive" },
   { src = "https://github.com/saghen/blink.cmp" },
+  { src = "https://github.com/nvim-lua/plenary.nvim" },
+  { src = "https://github.com/NeogitOrg/neogit" },
   { src = "https://github.com/christoomey/vim-tmux-navigator" },
   { src = "https://github.com/WTFox/jellybeans.nvim" },
 })
@@ -209,13 +210,13 @@ keymap.set('n', '<leader>b', ":Pick buffers<CR>", { desc = "Open buffer picker" 
 keymap.set('n', '<leader>s', ":Pick lsp scope='document_symbol'<CR>", { desc = "Open symbols picker" })
 keymap.set('n', '<leader>S', ":Pick lsp scope='workspace_symbol'<CR>", { desc = "Open workspace symbols picker" })
 keymap.set('n', '<leader>h', ":Pick lsp scope='references'<CR>", { desc = "Select symbols references" })
+keymap.set('n', '<leader>g', ":Neogit<CR>", { desc = "Open neogit" })
 keymap.set('n', '<leader>d', ":Pick diagnostic<CR>", { desc = "Open diagnostic picker" })
 keymap.set('n', '<leader>n', ":Pick hipatterns<CR>", { desc = "Open hipatterns picker" })
 keymap.set('n', '<leader>c', ":normal gcc<CR>", { desc = "Comment/Uncomment" })
 keymap.set('n', '<leader>r', ":normal grn<CR>", { desc = "Rename symbol" })
 keymap.set('n', '<leader>a', ":normal gra<CR>", { desc = "Perform code action" })
 keymap.set('n', '<leader>k', ":normal K<CR>", { desc = "Show docs for item under cursor" })
-keymap.set('n', '<leader>g', ":G<CR>", { desc = "Open git menu" })
 keymap.set('n', '<leader>/', ":Pick grep_live<CR>", { desc = "Search in current workspace" })
 keymap.set('n', '<leader>U', ":lua vim.pack.update()<CR>", { desc = "Update plugins" })
 keymap.set('n', '<C-h>', '<Cmd>TmuxNavigateLeft<CR>', { desc = "Move to left pane" })
@@ -284,10 +285,18 @@ end
 _G.LSP = function()
   local c = vim.lsp.get_clients({ buf = 0 })[1]; return c and c.name or ''
 end
+_G.GIT_BRANCH = function()
+  local s = vim.b.minigit_summary or {}
+  local name = s.head_name
+  if name == 'HEAD' and s.head then
+    name = string.sub(s.head, 1, 7) -- detached HEAD
+  end
+  return (name and name ~= '') and ('  ' .. name) or ''
+end
 
 vim.o.statusline =
     " %{v:lua.M()}  %<%f%{&modified?' ':''}%{&readonly?' ':''}" ..
-    " %{exists('*FugitiveHead')&&FugitiveHead()!=''?'  '.FugitiveHead():''} %=" ..
+    " %{v:lua.GIT_BRANCH()} %=" ..
     "%#DiagnosticHint#%{v:lua.DH()!=''?' ':''}%*%{v:lua.DH()} " ..
     "%#DiagnosticWarn#%{v:lua.DW()!=''?' ':''}%*%{v:lua.DW()} " ..
     "%#DiagnosticError#%{v:lua.DE()!=''?' ':''}%*%{v:lua.DE()} " ..
@@ -304,5 +313,24 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 vim.ui.select = MiniPick.ui_select
 
 vim.notify = require("mini.notify").make_notify({})
+
+local starter = require('mini.starter')
+starter.setup({
+  items = {
+    { name = "Create new file", action = ":enew",                 section = "" },
+    { name = "File picker",     action = ":Pick files",           section = "" },
+    { name = "Explorer",        action = ":lua MiniFiles.open()", section = "" },
+    { name = "Recent Files",    action = ":Pick oldfiles",        section = "" },
+    { name = "Mason",           action = ":Mason",                section = "" },
+    { name = "Git",             action = ":Neogit",               section = "" },
+    { name = "Quit",            action = ":qa!",                  section = "" },
+  },
+  header = " Neovim " .. tostring(vim.version()),
+  footer = "",
+  content_hooks = {
+    starter.gen_hook.adding_bullet("- "),
+    starter.gen_hook.aligning("center", "center")
+  },
+})
 
 vim.cmd [[ colorscheme jellybeans ]]
