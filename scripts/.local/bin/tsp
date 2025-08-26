@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+sess=$(tmux list-sessions -F '#S' | fzf --height=60% --layout=reverse --border=rounded) || exit 0
+[[ -n $TMUX ]] && tmux switch-client -t "$sess" || tmux attach -t "$sess"
