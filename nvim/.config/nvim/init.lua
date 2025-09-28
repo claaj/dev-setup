@@ -1,28 +1,29 @@
---  ############################### SIMPLE NVIM CONFIG ############################### --
+--- ######## My simple Config ########## --
 
--- ################################ PLUGINS ################################ --
-vim.pack.add({
-  { src = "https://github.com/echasnovski/mini.nvim" },
-  { src = "https://github.com/nvim-treesitter/nvim-treesitter" },
-  { src = "https://github.com/neovim/nvim-lspconfig" },
-  { src = "https://github.com/mason-org/mason.nvim" },
-  { src = "https://github.com/mason-org/mason-lspconfig.nvim" },
-  { src = "https://github.com/stevearc/conform.nvim" },
-  { src = "https://github.com/saghen/blink.cmp" },
-  { src = "https://github.com/nvim-lua/plenary.nvim" },
-  { src = "https://github.com/NeogitOrg/neogit" },
-  { src = "https://github.com/christoomey/vim-tmux-navigator" },
-  { src = "https://github.com/WTFox/jellybeans.nvim" },
-})
+-- ################## MINI DEPS BOOTSTRAP ################# --
+local path_package = vim.fn.stdpath("data") .. "/site/"
+local mini_path = path_package .. "pack/deps/start/mini.nvim"
+if not vim.loop.fs_stat(mini_path) then
+  vim.cmd('echo "Installing `mini.nvim`" | redraw')
+  local clone_cmd = {
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/nvim-mini/mini.nvim",
+    mini_path,
+  }
+  vim.fn.system(clone_cmd)
+  vim.cmd("packadd mini.nvim | helptags ALL")
+  vim.cmd('echo "Installed `mini.nvim`" | redraw')
+end
 
+require("mini.deps").setup({ path = { package = path_package } })
+
+-- ################### MINI CONFIG ################### --
 require("mini.icons").setup({ style = "glyph" })
-
 require("mini.surround").setup()
-
 require("mini.pairs").setup()
-
 require("mini.diff").setup({ view = { style = "sign" } })
-
 require("mini.git").setup()
 
 require("mini.notify").setup({
@@ -106,40 +107,17 @@ miniclue.setup({
   },
 })
 
-require("mason").setup()
+local add = MiniDeps.add
 
-require("mason-lspconfig").setup()
-
-require("conform").setup({
-  format_on_save = {
-    lsp_fallback = true,
-    async = false,
-    timeout_ms = 1000,
-  }
-})
-
-require("blink.cmp").setup({
-  sources = { default = { "lsp", "path", "snippets", "buffer" } },
-  keymap = {
-    ["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
-    ["<C-e>"] = { "hide", "fallback" },
-    ["<CR>"] = { "accept", "fallback" },
-    ["<Tab>"] = { "snippet_forward", "fallback" },
-    ["<S-Tab>"] = { "snippet_backward", "fallback" },
-    ["<Up>"] = { "select_prev", "fallback" },
-    ["<Down>"] = { "select_next", "fallback" },
-    ["<C-p>"] = { "select_prev", "fallback_to_mappings" },
-    ["<C-n>"] = { "select_next", "fallback_to_mappings" },
-    ["<C-b>"] = { "scroll_documentation_up", "fallback" },
-    ["<C-f>"] = { "scroll_documentation_down", "fallback" },
-    ["<C-k>"] = { "show_signature", "hide_signature", "fallback" },
+add({
+  source = "nvim-treesitter/nvim-treesitter",
+  checkout = "master",
+  monitor = "main",
+  hooks = {
+    post_checkout = function()
+      vim.cmd("TSUpdate")
+    end,
   },
-  signature = {
-    enabled = true,
-    window = { show_documentation = true },
-    trigger = { show_on_trigger_character = false, show_on_insert_on_trigger_character = false }
-  },
-  fuzzy = { implementation = "lua" },
 })
 
 require("nvim-treesitter.configs").setup({
@@ -169,8 +147,66 @@ require("nvim-treesitter.configs").setup({
     "just",
     "make",
     "cmake",
-  }
+  },
 })
+
+add({
+  source = "mason-org/mason-lspconfig.nvim",
+  depends = { "neovim/nvim-lspconfig", "mason-org/mason.nvim" },
+})
+
+require("mason").setup()
+require("mason-lspconfig").setup()
+
+add("stevearc/conform.nvim")
+require("conform").setup({
+  format_on_save = {
+    lsp_fallback = true,
+    async = false,
+    timeout_ms = 1000,
+  },
+})
+
+add("saghen/blink.cmp")
+require("blink.cmp").setup({
+  sources = { default = { "lsp", "path", "snippets", "buffer" } },
+  keymap = {
+    ["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
+    ["<C-e>"] = { "hide", "fallback" },
+    ["<CR>"] = { "accept", "fallback" },
+    ["<Tab>"] = { "snippet_forward", "fallback" },
+    ["<S-Tab>"] = { "snippet_backward", "fallback" },
+    ["<Up>"] = { "select_prev", "fallback" },
+    ["<Down>"] = { "select_next", "fallback" },
+    ["<C-p>"] = { "select_prev", "fallback_to_mappings" },
+    ["<C-n>"] = { "select_next", "fallback_to_mappings" },
+    ["<C-b>"] = { "scroll_documentation_up", "fallback" },
+    ["<C-f>"] = { "scroll_documentation_down", "fallback" },
+    ["<C-k>"] = { "show_signature", "hide_signature", "fallback" },
+  },
+  signature = {
+    enabled = true,
+    window = { show_documentation = true },
+    trigger = { show_on_trigger_character = false, show_on_insert_on_trigger_character = false },
+  },
+  fuzzy = { implementation = "lua" },
+})
+
+add({
+  source = "NeogitOrg/neogit",
+  depends = { "nvim-lua/plenary.nvim" },
+})
+
+add("christoomey/vim-tmux-navigator")
+
+vim.g.tmux_navigator_no_mappings = 1
+vim.keymap.set("n", "<C-h>", "<cmd><C-U>TmuxNavigateLeft<cr>")
+vim.keymap.set("n", "<C-j>", "<cmd><C-U>TmuxNavigateDown<cr>")
+vim.keymap.set("n", "<C-k>", "<cmd><C-U>TmuxNavigateUp<cr>")
+vim.keymap.set("n", "<C-l>", "<cmd><C-U>TmuxNavigateRight<cr>")
+vim.keymap.set("n", "<C-\\>", "<cmd><C-U>TmuxNavigatePrevious<cr>")
+
+add("WTFox/jellybeans.nvim")
 
 -- #################################### OPTIONS ################################# --
 local opt = vim.opt
@@ -277,7 +313,8 @@ _G.M = function()
       [m] or m
 end
 _G.DE = function()
-  local n = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.ERROR }); return n > 0 and tostring(n) or ''
+  local n = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.ERROR }); return n > 0 and tostring(n) or
+      ''
 end
 _G.DW = function()
   local n = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.WARN }); return n > 0 and tostring(n) or ''
@@ -328,7 +365,7 @@ starter.setup({
     { name = "Git",             action = ":Neogit",               section = "" },
     { name = "Quit",            action = ":qa!",                  section = "" },
   },
-  header = " Neovim " .. tostring(vim.version()),
+  header = " Neovim " .. string.format("%s.%s.%s", vim.version().major, vim.version().minor, vim.version().patch),
   footer = "",
   content_hooks = {
     starter.gen_hook.adding_bullet("- "),
@@ -336,4 +373,4 @@ starter.setup({
   },
 })
 
-vim.cmd [[ colorscheme jellybeans ]]
+vim.cmd([[colorscheme jellybeans]])
