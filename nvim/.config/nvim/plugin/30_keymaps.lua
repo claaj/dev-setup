@@ -1,0 +1,42 @@
+-- ################################### KEYMAPS ################################# --
+vim.g.mapleader = " "
+vim.g.bufferleader = " "
+local keymap = vim.keymap
+keymap.set({ "n", "x" }, "<leader>y", '"+y', { desc = "Yank to clipboard" })
+keymap.set({ "n", "x" }, "<leader>p", '"+p', { desc = "Paste from clipboard" })
+keymap.set("i", "jk", "<ESC>", { desc = "Exit insert mode with jk" })
+keymap.set("i", "kj", "<ESC>", { desc = "Exit insert mode with jk" })
+keymap.set("n", "<leader>N", ":nohl<CR>", { desc = "Clear search highlights" })
+keymap.set("n", "<leader>wv", "<C-w>v", { desc = "Split window vertically" })
+keymap.set("n", "<leader>wh", "<C-w>s", { desc = "Split window horizontally" })
+keymap.set("n", "<leader>f", ":Pick files<CR>", { desc = "Open file picker" })
+keymap.set("n", "<leader>b", ":Pick buffers<CR>", { desc = "Open buffer picker" })
+keymap.set("n", "<leader>s", ":Pick lsp scope='document_symbol'<CR>", { desc = "Open symbols picker" })
+keymap.set("n", "<leader>S", ":Pick lsp scope='workspace_symbol'<CR>", { desc = "Open workspace symbols picker" })
+keymap.set("n", "<leader>h", ":Pick lsp scope='references'<CR>", { desc = "Select symbols references" })
+keymap.set("n", "<leader>g", ":Neogit<CR>", { desc = "Open neogit" })
+keymap.set("n", "<leader>d", ":Pick diagnostic<CR>", { desc = "Open diagnostic picker" })
+keymap.set("n", "<leader>n", ":Pick hipatterns<CR>", { desc = "Open hipatterns picker" })
+keymap.set("n", "<leader>c", ":normal gcc<CR>", { desc = "Comment/Uncomment" })
+keymap.set("n", "<leader>r", ":normal grn<CR>", { desc = "Rename symbol" })
+keymap.set("n", "<leader>a", ":normal gra<CR>", { desc = "Perform code action" })
+keymap.set("n", "<leader>k", ":normal K<CR>", { desc = "Show docs for item under cursor" })
+keymap.set("n", "<leader>/", ":Pick grep_live<CR>", { desc = "Search in current workspace" })
+keymap.set("n", "<leader>U", ":lua vim.pack.update()<CR>", { desc = "Update plugins" })
+keymap.set("n", "<C-h>", "<Cmd>TmuxNavigateLeft<CR>", { desc = "Move to left pane" })
+keymap.set("n", "<C-j>", "<Cmd>TmuxNavigateDown<CR>", { desc = "Move to down pane" })
+keymap.set("n", "<C-k>", "<Cmd>TmuxNavigateUp<CR>", { desc = "Move to up pane" })
+keymap.set("n", "<C-l>", "<Cmd>TmuxNavigateRight<CR>", { desc = "Move to right pane" })
+keymap.set("n", "<leader>e", function()
+	return MiniFiles.close() or MiniFiles.open()
+end, { desc = "File explorer" })
+keymap.set("n", "<leader>x", function()
+	return vim.cmd(vim.fn.winnr("$") > 1 and "close" or "bdelete")
+end, { desc = "Close split or buffer" })
+
+vim.api.nvim_create_autocmd("LspAttach", {
+	callback = function()
+		keymap.set("n", "grd", vim.diagnostic.open_float, { desc = "Show line diagnostics" })
+		keymap.set("n", "gd", "<cmd>lua vim.lsp.buf.definition()<cr>", { desc = "Go to definition" })
+	end,
+})
