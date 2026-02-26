@@ -2,7 +2,6 @@
 
 DIRS=(
     "$HOME/repos"
-    "$HOME/notes"
 )
 
 if [[ $# -eq 1 ]]; then
