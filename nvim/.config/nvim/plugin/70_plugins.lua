@@ -1,4 +1,4 @@
-local add, later = MiniDeps.add, MiniDeps.later
+local add, later, now = MiniDeps.add, MiniDeps.later, MiniDeps.now
 local now_if_args = _G.Config.now_if_args
 
 now_if_args(function()
@@ -34,20 +34,20 @@ later(function()
 	})
 end)
 
-later(function()
+now(function()
 	add("christoomey/vim-tmux-navigator")
 
 	vim.g.tmux_navigator_no_mappings = 1
-	vim.keymap.set("n", "<C-h>", "<cmd><C-U>TmuxNavigateLeft<cr>")
-	vim.keymap.set("n", "<C-j>", "<cmd><C-U>TmuxNavigateDown<cr>")
-	vim.keymap.set("n", "<C-k>", "<cmd><C-U>TmuxNavigateUp<cr>")
-	vim.keymap.set("n", "<C-l>", "<cmd><C-U>TmuxNavigateRight<cr>")
-	vim.keymap.set("n", "<C-\\>", "<cmd><C-U>TmuxNavigatePrevious<cr>")
+	vim.keymap.set("n", "<C-h>", "<cmd>TmuxNavigateLeft<cr>")
+	vim.keymap.set("n", "<C-j>", "<cmd>TmuxNavigateDown<cr>")
+	vim.keymap.set("n", "<C-k>", "<cmd>TmuxNavigateUp<cr>")
+	vim.keymap.set("n", "<C-l>", "<cmd>TmuxNavigateRight<cr>")
+	vim.keymap.set("n", "<C-\\>", "<cmd>TmuxNavigatePrevious<cr>")
 end)
 
 now_if_args(function()
 	add("WTFox/jellybeans.nvim")
-	vim.cmd("colorscheme jellybeans-muted")
+	vim.cmd("colorscheme jellybeans")
 end)
 
 now_if_args(function()
