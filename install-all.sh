@@ -16,11 +16,17 @@ setup_nix() {
 install_tools() {
     local pkgs=(
         neovim
+        tmux
         ripgrep
         fd
         fzf
         eza
         yazi
+        btop
+        fastfetch
+        starship
+        typst
+        gitu
         stow
     )
     for pkg in "${pkgs[@]}"; do
@@ -36,11 +42,33 @@ install_lsp() {
         ruff
         clang-tools
         neocmakelsp
+        typescript-language-server
+        vscode-langservers-extracted
+        lua-language-server
+        stylua
+        rust-analyzer
+        zls
+        tinymist
+        marksman
+        nil
     )
     for pkg in "${pkgs[@]}"; do
         echo "Installing $pkg..."
         nix profile add nixpkgs#"$pkg"
     done
+}
+
+# ─── Fonts ──────────────────────────────────────────────────────
+install_fonts() {
+    mkdir -p ~/.local/share/fonts
+ 
+    echo "Downloading Adwaita Mono Nerd Font..."
+    curl -fLo /tmp/adwaita-nerd.zip \
+        https://github.com/ryanoasis/nerd-fonts/releases/latest/download/AdwaitaMono.zip
+    unzip -o /tmp/adwaita-nerd.zip -d ~/.local/share/fonts/
+ 
+    rm -rf /tmp/adwaita-nerd.zip 
+    fc-cache -fvr
 }
 
 # ─── Shell config ───────────────────────────────────────────────
@@ -57,6 +85,7 @@ setup_shell() {
 
 # --- nix-dotfiles ---
 . "$HOME/.nix-profile/etc/profile.d/nix.sh"
+eval "$(starship init bash)"
 export EDITOR="nvim"
 alias vim="nvim"
 alias ll="eza -la --icons --color=always"
@@ -80,7 +109,8 @@ EOF
 
 # ─── Stow dotfiles ──────────────────────────────────────────────
 run_stow() {
-    stow nvim tmux
+    stow fontconfig tmux nvim
+    fc-cache -fvr
 }
 
 # ─── Main ───────────────────────────────────────────────────────
@@ -93,6 +123,9 @@ main() {
 
     echo "==> Installing LSPs and formatters..."
     install_lsp
+
+    echo "==> Installing fonts..."
+    install_fonts
 
     echo "==> Configuring shell..."
     setup_shell

@@ -28,15 +28,15 @@ keymap.set("n", "<C-j>", "<Cmd>TmuxNavigateDown<CR>", { desc = "Move to down pan
 keymap.set("n", "<C-k>", "<Cmd>TmuxNavigateUp<CR>", { desc = "Move to up pane" })
 keymap.set("n", "<C-l>", "<Cmd>TmuxNavigateRight<CR>", { desc = "Move to right pane" })
 keymap.set("n", "<leader>e", function()
-	return MiniFiles.close() or MiniFiles.open()
+  return MiniFiles.close() or MiniFiles.open()
 end, { desc = "File explorer" })
 keymap.set("n", "<leader>x", function()
-	return vim.cmd(vim.fn.winnr("$") > 1 and "close" or "bdelete")
+  return vim.cmd(vim.fn.winnr("$") > 1 and "close" or "bdelete")
 end, { desc = "Close split or buffer" })
 
 vim.api.nvim_create_autocmd("LspAttach", {
-	callback = function()
-		keymap.set("n", "grd", vim.diagnostic.open_float, { desc = "Show line diagnostics" })
-		keymap.set("n", "gd", "<cmd>lua vim.lsp.buf.definition()<cr>", { desc = "Go to definition" })
-	end,
+  callback = function()
+    keymap.set("n", "grd", vim.diagnostic.open_float, { desc = "Show line diagnostics" })
+    keymap.set("n", "gd", "<cmd>lua vim.lsp.buf.definition()<cr>", { desc = "Go to definition" })
+  end,
 })
