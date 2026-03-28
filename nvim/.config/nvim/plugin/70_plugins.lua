@@ -94,7 +94,7 @@ now_if_args(function()
       "--compile-commands-dir=build",
       "--header-insertion=iwyu",
       "--completion-style=detailed",
-      "--function-arg-placeholders",
+      "--function-arg-placeholders=1",
     },
   })
 
