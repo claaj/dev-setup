@@ -14,6 +14,9 @@ setup_nix() {
 
 # ─── CLI tools ──────────────────────────────────────────────────
 install_tools() {
+   export NIX_CONFIG="experimental-features = nix-command flakes
+allow-unfree = true"
+
     local pkgs=(
         neovim
         ripgrep
@@ -28,6 +31,9 @@ install_tools() {
 
 # ─── LSPs and formatters ────────────────────────────────────────
 install_lsp() {
+    export NIX_CONFIG="experimental-features = nix-command flakes
+allow-unfree = true"
+
     local pkgs=(
         basedpyright
         ruff
