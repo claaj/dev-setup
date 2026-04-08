@@ -171,46 +171,30 @@ for _, server in ipairs(servers) do
   end
 end
 
--- MINIMAX TS CONFIG
-local ts_update = function() vim.cmd('TSUpdate') end
--- Config.on_packchanged('nvim-treesitter', { 'update' }, ts_update, ':TSUpdate')
-
-add({
-  'https://github.com/nvim-treesitter/nvim-treesitter',
-  'https://github.com/nvim-treesitter/nvim-treesitter-textobjects',
+vim.api.nvim_create_autocmd("PackChanged", {
+  callback = function(ev)
+    local name, kind = ev.data.spec.name, ev.data.kind
+    if name == "nvim-treesitter" and kind == "update" then
+      if not ev.data.active then
+        vim.cmd.packadd("nvim-treesitter")
+      end
+      vim.cmd("TSUpdate")
+    end
+  end,
 })
 
-local languages = {
-  "json",
-  "lua",
-  "c",
-  "rust",
-  "python",
-  "bash",
-  "cpp",
-  "gitignore",
-  "markdown",
-  "markdown_inline",
-  "comment",
-  "printf",
-  "diff",
-  "ini",
-  "toml",
-  "just",
-  "make",
-  "cmake",
-}
-local isnt_installed = function(lang)
-  return #vim.api.nvim_get_runtime_file('parser/' .. lang .. '.*', false) == 0
-end
-local to_install = vim.tbl_filter(isnt_installed, languages)
-if #to_install > 0 then require('nvim-treesitter').install(to_install) end
+vim.pack.add({
+  { src = "https://github.com/nvim-treesitter/nvim-treesitter" },
+  { src = "https://github.com/nvim-treesitter/nvim-treesitter-context" },
+})
 
-local filetypes = {}
-for _, lang in ipairs(languages) do
-  for _, ft in ipairs(vim.treesitter.language.get_filetypes(lang)) do
-    table.insert(filetypes, ft)
-  end
-end
-local ts_start = function(ev) vim.treesitter.start(ev.buf) end
-Config.new_autocmd('FileType', filetypes, ts_start, 'Start tree-sitter')
+require('nvim-treesitter').install {
+  "json", "lua", "c", "rust", "python", "bash", "cpp",
+  "gitignore", "markdown", "markdown_inline", "comment",
+  "printf", "diff", "ini", "toml", "just", "make", "cmake"
+}
+
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { '<filetype>' },
+  callback = function() vim.treesitter.start() end,
+})
