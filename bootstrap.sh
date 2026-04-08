@@ -3,13 +3,13 @@ set -euo pipefail
 
 # ─── Nix ────────────────────────────────────────────────────────
 setup_nix() {
-    if command -v nix &>/dev/null; then
-        echo "Nix already installed, skipping"
-        return
-    fi
-    echo "Installing Nix..."
-    curl -L https://nixos.org/nix/install | sh -s -- --no-daemon
-    . "$HOME/.nix-profile/etc/profile.d/nix.sh"
+  if command -v nix &>/dev/null; then
+    echo "Nix already installed, skipping"
+    return
+  fi
+  echo "Installing Nix..."
+  sh <(curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install) --no-daemon --yes
+  . "$HOME/.nix-profile/etc/profile.d/nix.sh"
 }
 
 # ─── CLI tools ──────────────────────────────────────────────────
@@ -23,10 +23,7 @@ install_tools() {
         yazi
         stow
     )
-    for pkg in "${pkgs[@]}"; do
-        echo "Installing $pkg..."
-        nix profile add nixpkgs#"$pkg"
-    done
+    nix profile add "${pkgs[@]/#/nixpkgs#}"
 }
 
 # ─── LSPs and formatters ────────────────────────────────────────
@@ -37,10 +34,7 @@ install_lsp() {
         clang-tools
         neocmakelsp
     )
-    for pkg in "${pkgs[@]}"; do
-        echo "Installing $pkg..."
-        nix profile add nixpkgs#"$pkg"
-    done
+    nix profile add "${pkgs[@]/#/nixpkgs#}"
 }
 
 # ─── Shell config ───────────────────────────────────────────────
@@ -68,7 +62,10 @@ export FZF_DEFAULT_OPTS=" \
 		--color=border:#151515 \
 		--multi"
 
-nix-add()     { NIXPKGS_ALLOW_UNFREE=1 nix profile add --impure nixpkgs#"$1"; }
+export NIX_CONFIG="experimental-features = nix-command flakes
+allow-unfree = true"
+
+nix-add()     { nix profile add nixpkgs#"$1"; }
 nix-remove()  { nix profile remove nixpkgs#"$1"; }
 nix-search()  { nix search nixpkgs "$1"; }
 nix-upgrade() { nix profile upgrade --all; }
