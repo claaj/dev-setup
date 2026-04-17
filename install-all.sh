@@ -98,9 +98,9 @@ export FZF_DEFAULT_OPTS=" \
 export NIX_CONFIG="experimental-features = nix-command flakes"
 
 nix-add() { NIXPKGS_ALLOW_UNFREE=1 nix profile add --impure nixpkgs#"$1"; }
-nix-remove()  { nix profile remove nixpkgs#"$1"; }
+nix-remove()  { nix profile remove "$1"; }
 nix-search()  { nix search nixpkgs "$1"; }
-nix-upgrade() { nix profile upgrade --all; }
+nix-upgrade() { NIXPKGS_ALLOW_UNFREE=1 nix profile upgrade --impure --all; }
 nix-list()    { nix profile list; }
 nix-gc()      { nix-collect-garbage -d; }
 # --- end nix-dotfiles ---
