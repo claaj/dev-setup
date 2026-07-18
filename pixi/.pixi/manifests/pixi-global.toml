@@ -1,0 +1,8 @@
+version = 1
+
+[envs.dev]
+channels = ["conda-forge"]
+
+dependencies = { nvim = "*", tmux = "*", ripgrep = "*", fd-find = "*", fzf = "*", eza = "*", yazi = "*", btop = "*", fastfetch = "*", starship = "*", typst = "*", stow = "*", basedpyright = "*", ruff = "*", clang-tools = "*", neocmakelsp = "*", typescript-language-server = "*", vscode-langservers-extracted = "*", lua-language-server = "*", stylua = "*", rust-analyzer = "*", tinymist = "*", marksman = "*" }
+
+exposed = { nvim = "nvim", tmux = "tmux", rg = "rg", fd = "fd", fzf = "fzf", eza = "eza", ya = "ya", yazi = "yazi", btop = "btop", fastfetch = "fastfetch", starship = "starship", typst = "typst", stow = "stow", chkstow = "chkstow", basedpyright = "basedpyright", basedpyright-langserver = "basedpyright-langserver", ruff = "ruff", clangd = "clangd", clang-tidy = "clang-tidy", run-clang-tidy = "run-clang-tidy", git-clang-format = "git-clang-format", neocmakelsp = "neocmakelsp", typescript-language-server = "typescript-language-server", vscode-css-language-server = "vscode-css-language-server", vscode-eslint-language-server = "vscode-eslint-language-server", vscode-html-language-server = "vscode-html-language-server", vscode-json-language-server = "vscode-json-language-server", vscode-markdown-language-server = "vscode-markdown-language-server", lua-language-server = "lua-language-server", stylua = "stylua", rust-analyzer = "rust-analyzer", tinymist = "tinymist", marksman = "marksman" }

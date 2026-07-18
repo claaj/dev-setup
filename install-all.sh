@@ -1,59 +1,33 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# ─── Nix ────────────────────────────────────────────────────────
-setup_nix() {
-  if command -v nix &>/dev/null; then
-    echo "Nix already installed, skipping"
-    return
+# ─── Pixi ───────────────────────────────────────────────────────
+setup_pixi() {
+  if command -v pixi &>/dev/null; then
+    echo "Pixi already installed, skipping"
+  else
+    echo "Installing Pixi..."
+    curl -fsSL https://pixi.sh/install.sh | bash
   fi
-  echo "Installing Nix..."
-  sh <(curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install) --no-daemon --yes
-  . "$HOME/.nix-profile/etc/profile.d/nix.sh"
+  export PATH="$HOME/.pixi/bin:$PATH"
 }
 
-# ─── CLI tools ──────────────────────────────────────────────────
-install_tools() {
-  export NIX_CONFIG="experimental-features = nix-command flakes"
+# ─── Tools & LSPs (declarative) ─────────────────────────────────
+# Everything is declared in ./pixi/.pixi/manifests/pixi-global.toml.
+# We stow that manifest into ~/.pixi/manifests/ and let `pixi global
+# sync` install exactly what it declares.
+sync_pixi() {
+  local target="$HOME/.pixi/manifests/pixi-global.toml"
 
-  local pkgs=(
-    neovim
-    tmux
-    ripgrep
-    fd
-    fzf
-    eza
-    yazi
-    btop
-    fastfetch
-    starship
-    typst
-    gitu
-    stow
-  )
-  nix profile add "${pkgs[@]/#/nixpkgs#}"
-}
+  # If a real (non-symlink) manifest already exists, back it up so stow
+  # can link ours without conflict.
+  if [ -e "$target" ] && [ ! -L "$target" ]; then
+    echo "Backing up existing manifest -> ${target}.bak"
+    mv "$target" "${target}.bak"
+  fi
 
-# ─── LSPs and formatters ────────────────────────────────────────
-install_lsp() {
-  export NIX_CONFIG="experimental-features = nix-command flakes"
-
-  local pkgs=(
-    basedpyright
-    ruff
-    clang-tools
-    neocmakelsp
-    typescript-language-server
-    vscode-langservers-extracted
-    lua-language-server
-    stylua
-    rust-analyzer
-    zls
-    tinymist
-    marksman
-    nil
-  )
-  nix profile add "${pkgs[@]/#/nixpkgs#}"
+  stow pixi
+  pixi global sync
 }
 
 # ─── Fonts ──────────────────────────────────────────────────────
@@ -65,14 +39,20 @@ install_fonts() {
     https://github.com/ryanoasis/nerd-fonts/releases/latest/download/AdwaitaMono.zip
   unzip -o /tmp/adwaita-nerd.zip -d ~/.local/share/fonts/
 
-  rm -rf /tmp/adwaita-nerd.zip 
+  rm -rf /tmp/adwaita-nerd.zip
   fc-cache -fvr
 }
 
 # ─── Shell config ───────────────────────────────────────────────
 setup_shell() {
   local rc="$HOME/.bashrc"
-  local marker="# --- nix-dotfiles ---"
+  local marker="# --- pixi-dotfiles ---"
+
+  # Drop any leftover nix-dotfiles block from a previous setup.
+  if grep -q "# --- nix-dotfiles ---" "$rc" 2>/dev/null; then
+    echo "Removing old nix-dotfiles shell block..."
+    sed -i '/# --- nix-dotfiles ---/,/# --- end nix-dotfiles ---/d' "$rc"
+  fi
 
   if grep -q "$marker" "$rc" 2>/dev/null; then
     echo "Shell already configured, skipping"
@@ -81,8 +61,12 @@ setup_shell() {
 
   cat >> "$rc" << 'EOF'
 
-# --- nix-dotfiles ---
-. "$HOME/.nix-profile/etc/profile.d/nix.sh"
+# --- pixi-dotfiles ---
+case ":$PATH:" in
+  *":$HOME/.pixi/bin:"*) ;;
+  *) export PATH="$HOME/.pixi/bin:$PATH" ;;
+esac
+
 eval "$(starship init bash)"
 export EDITOR="nvim"
 alias vim="nvim"
@@ -95,15 +79,15 @@ export FZF_DEFAULT_OPTS=" \
     --color=border:#151515 \
     --multi"
 
-export NIX_CONFIG="experimental-features = nix-command flakes"
-
-nix-add() { NIXPKGS_ALLOW_UNFREE=1 nix profile add --impure nixpkgs#"$1"; }
-nix-remove()  { nix profile remove "$1"; }
-nix-search()  { nix search nixpkgs "$1"; }
-nix-upgrade() { NIXPKGS_ALLOW_UNFREE=1 nix profile upgrade --impure --all; }
-nix-list()    { nix profile list; }
-nix-gc()      { nix-collect-garbage -d; }
-# --- end nix-dotfiles ---
+# pixi global helpers
+pixi-add()    { pixi global install --environment dev "$1"; }
+pixi-remove() { pixi global remove --environment dev "$1"; }
+pixi-search() { pixi search "$1"; }
+pixi-update() { pixi global update; }
+pixi-list()   { pixi global list; }
+pixi-sync()   { pixi global sync; }
+pixi-gc()     { pixi clean cache; }
+# --- end pixi-dotfiles ---
 EOF
 }
 
@@ -115,14 +99,11 @@ run_stow() {
 
 # ─── Main ───────────────────────────────────────────────────────
 main() {
-  echo "==> Setting up Nix..."
-  setup_nix
+  echo "==> Setting up Pixi..."
+  setup_pixi
 
-  echo "==> Installing CLI tools..."
-  install_tools
-
-  echo "==> Installing LSPs and formatters..."
-  install_lsp
+  echo "==> Installing tools & LSPs from manifest..."
+  sync_pixi
 
   echo "==> Installing fonts..."
   install_fonts

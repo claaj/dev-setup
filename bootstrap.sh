@@ -1,50 +1,47 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# ─── Nix ────────────────────────────────────────────────────────
-setup_nix() {
-  if command -v nix &>/dev/null; then
-    echo "Nix already installed, skipping"
-    return
+# Minimal setup: installs a core subset of tools with Pixi.
+# For the full setup (all LSPs, fonts, starship, ...) use ./install-all.sh,
+# which installs everything declared in ./pixi/.pixi/manifests/pixi-global.toml.
+
+# ─── Pixi ───────────────────────────────────────────────────────
+setup_pixi() {
+  if command -v pixi &>/dev/null; then
+    echo "Pixi already installed, skipping"
+  else
+    echo "Installing Pixi..."
+    curl -fsSL https://pixi.sh/install.sh | bash
   fi
-  echo "Installing Nix..."
-  sh <(curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install) --no-daemon --yes
-  . "$HOME/.nix-profile/etc/profile.d/nix.sh"
+  export PATH="$HOME/.pixi/bin:$PATH"
 }
 
-# ─── CLI tools ──────────────────────────────────────────────────
+# ─── CLI tools + core LSPs (single 'dev' environment) ───────────
 install_tools() {
-  export NIX_CONFIG="experimental-features = nix-command flakes"
-
-  local pkgs=(
-    neovim
-    ripgrep
-    fd
-    fzf
-    eza
-    yazi
-    stow
-  )
-  nix profile add "${pkgs[@]/#/nixpkgs#}"
-}
-
-# ─── LSPs and formatters ────────────────────────────────────────
-install_lsp() {
-  export NIX_CONFIG="experimental-features = nix-command flakes"
-
-  local pkgs=(
-    basedpyright
-    ruff
-    clang-tools
+  pixi global install --environment dev \
+    nvim \
+    ripgrep \
+    fd-find \
+    fzf \
+    eza \
+    yazi \
+    stow \
+    basedpyright \
+    ruff \
+    clang-tools \
     neocmakelsp
-  )
-  nix profile add "${pkgs[@]/#/nixpkgs#}"
 }
 
 # ─── Shell config ───────────────────────────────────────────────
 setup_shell() {
   local rc="$HOME/.bashrc"
-  local marker="# --- nix-dotfiles ---"
+  local marker="# --- pixi-dotfiles ---"
+
+  # Drop any leftover nix-dotfiles block from a previous setup.
+  if grep -q "# --- nix-dotfiles ---" "$rc" 2>/dev/null; then
+    echo "Removing old nix-dotfiles shell block..."
+    sed -i '/# --- nix-dotfiles ---/,/# --- end nix-dotfiles ---/d' "$rc"
+  fi
 
   if grep -q "$marker" "$rc" 2>/dev/null; then
     echo "Shell already configured, skipping"
@@ -53,8 +50,12 @@ setup_shell() {
 
   cat >> "$rc" << 'EOF'
 
-# --- nix-dotfiles ---
-. "$HOME/.nix-profile/etc/profile.d/nix.sh"
+# --- pixi-dotfiles ---
+case ":$PATH:" in
+  *":$HOME/.pixi/bin:"*) ;;
+  *) export PATH="$HOME/.pixi/bin:$PATH" ;;
+esac
+
 export EDITOR="nvim"
 alias vim="nvim"
 alias ll="eza -la --icons --color=always"
@@ -66,15 +67,15 @@ export FZF_DEFAULT_OPTS=" \
     --color=border:#151515 \
     --multi"
 
-export NIX_CONFIG="experimental-features = nix-command flakes"
-
-nix-add() { NIXPKGS_ALLOW_UNFREE=1 nix profile add --impure nixpkgs#"$1"; }
-nix-remove()  { nix profile remove "$1"; }
-nix-search()  { nix search nixpkgs "$1"; }
-nix-upgrade() { NIXPKGS_ALLOW_UNFREE=1 nix profile upgrade --impure --all; }
-nix-list()    { nix profile list; }
-nix-gc()      { nix-collect-garbage -d; }
-# --- end nix-dotfiles ---
+# pixi global helpers
+pixi-add()    { pixi global install --environment dev "$1"; }
+pixi-remove() { pixi global remove --environment dev "$1"; }
+pixi-search() { pixi search "$1"; }
+pixi-update() { pixi global update; }
+pixi-list()   { pixi global list; }
+pixi-sync()   { pixi global sync; }
+pixi-gc()     { pixi clean cache; }
+# --- end pixi-dotfiles ---
 EOF
 }
 
@@ -85,14 +86,11 @@ run_stow() {
 
 # ─── Main ───────────────────────────────────────────────────────
 main() {
-  echo "==> Setting up Nix..."
-  setup_nix
+  echo "==> Setting up Pixi..."
+  setup_pixi
 
-  echo "==> Installing CLI tools..."
+  echo "==> Installing core tools & LSPs..."
   install_tools
-
-  echo "==> Installing LSPs and formatters..."
-  install_lsp
 
   echo "==> Configuring shell..."
   setup_shell
