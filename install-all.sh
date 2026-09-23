@@ -93,7 +93,7 @@ EOF
 
 # ─── Stow dotfiles ──────────────────────────────────────────────
 run_stow() {
-  stow fontconfig tmux nvim
+  stow fontconfig tmux nvim ghostty
   fc-cache -fvr
 }
 
